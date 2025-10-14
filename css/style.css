@@ -1,0 +1,132 @@
+/*top right bottom left*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: medium;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FBFBFB;
+}
+
+.form-box{
+    display: none;
+}
+
+.form-box.active{
+    display: block;
+}
+
+.link {
+    text-decoration: none;
+    color:rgb(119, 119, 119);
+    display: block;
+    margin-top: -15px;
+}
+
+.container{
+    background-color: #EDEDED;
+    width: 500px;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+img {
+    display: block;
+    margin: 0 auto 20px auto;
+    max-width: 100%;
+    width: auto;
+    text-align: center;
+}
+
+input[type="text"],input[type="password"]{
+    width: 440px;
+    padding: 14px 0 14px 15px;
+    border: none;
+    border-bottom: 2px solid #D5D5D5;
+    background-color: transparent;
+    outline: none;
+    margin-bottom: 20px;
+}
+
+select {
+    width: 440px;
+    padding: 14px 40px 14px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #D5D5D5;
+    outline: none;
+    margin-bottom: 20px;
+    background-position: calc(100% - 15px) center;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: calc(100% - 15px) center;
+    background-size: 16px;
+}
+
+input[type="text"]:focus,input[type="password"]:focus{
+    outline: none;
+    border-bottom: 2px solid #727272;
+}
+
+button{
+    width: 440px;
+    height: 50px;
+    padding: 10px;
+    background-color: #D23737;
+    color: #EDEDED;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+}
+
+button:hover {
+    background-color: #741c1c;
+}
+
+p{
+    width: 440px;
+    text-align: left;
+    padding: 8px;
+}
+
+.btnforgotPassw-form {
+    width: 220px;
+    padding: 10px;
+    background-color: #D23737;
+    color: #EDEDED;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    margin: 10px 5px;
+    vertical-align: top;
+}
+
+
+#forgotPassw-form form {
+    text-align: center;
+    font-size: 0;
+}
+
+#forgotPassw-form .btnforgotPassw-form {
+    font-size: 14px;
+}
