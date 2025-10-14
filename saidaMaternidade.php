@@ -265,4 +265,8 @@
     <script src="script/forms.js"></script>
 
 </body>
+
 </html>
+
+<?php
+?>
