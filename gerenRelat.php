@@ -114,4 +114,8 @@
         <h1>Gerenciador de relatórios</h1>
     </main>
 </body>
+
 </html>
+
+<?php
+?>
