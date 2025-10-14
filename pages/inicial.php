@@ -114,4 +114,8 @@
         <h1>Aqui vai aparecer se tiver fórmula perto do vencimento</h1>
     </main>
 </body>
+
 </html>
+
+<?php
+?>
