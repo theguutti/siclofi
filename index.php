@@ -18,12 +18,12 @@
 
                 <select class="form-control" name="uf" id="uf" required>
                     <option value="">UF</option>
-                    <option value="AC">AC</option> <!-- TO DO: ADD OUTRAS UF -->
+                    <option value="AC">AC</option>
                 </select><br>
 
                 <select class="form-control" name="udm" id="udm" required>
                     <option value="">Unidade</option>
-                    <option value="178">ANGRA DOS REIS - CENTRO DE ESPECILIDADES MÉDICAS - ANGRA DOS</option> <!-- TO DO: ADD OUTRAS UDM -->
+                    <option value="178">ANGRA DOS REIS - CENTRO DE ESPECILIDADES MÉDICAS - ANGRA DOS</option> 
                 </select><br>
                 
                 <input type="text" name="cpf" autocomplete="off" minlength="14" maxlength="14" id="cpf" class="form-control" placeholder="CPF" required><br> 
