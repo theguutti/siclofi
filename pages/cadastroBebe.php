@@ -1,11 +1,16 @@
+<?php
+session_start();
+require_once '../functions/auth.php';
+verificarLogin();
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Inicial</title>
-    <link rel="stylesheet" href="css/styleInicial.css">
-    <link rel="stylesheet" href="css/cadBeberegObito.css">
+    <link rel="stylesheet" href="../css/styleInicial.css">
+    <link rel="stylesheet" href="../css/cadBeberegObito.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
@@ -101,7 +106,7 @@
                 </li>
             </ul>
         </div>
-        <form action="logout.php" method="post">
+        <form action="../logout.php" method="post">
             <div id="logout">
                 <button type="submit" id="logoutBtn">
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -135,7 +140,7 @@
                     
                     <div class="botoes">
                         <div class="row-buttons">
-                            <button class="btn" id="consultar" onclick="validarConsulta()"> <i class="fa-solid fa-magnifying-glass"></i> Consultar </button>
+                            <button class="btn" id="consultar" onclick="consultarBebe()"> <i class="fa-solid fa-magnifying-glass"></i> Consultar </button>
                             <button class="btn" id="adicionar" onclick="showForm('new-form')"> <i class="fa-solid fa-plus"></i> Adicionar </button>
                         </div>
                     </div>
@@ -154,6 +159,20 @@
                 <div class="conteudo"> 
 
                     <div class="row-items">
+                        
+                        <div class="field-group wide">
+                            <label>Nome Completo do Bebê - Civil</label>
+                            <input type="text" name="nomeBebeInput-new" autocomplete="off" id="nomeBebe-new" required>
+                        </div>
+
+                        <div class="field-group wide">
+                            <label class="label-control">Nome Completo do Responsável</label>
+                            <input type="text" name="nomeResponsavelInput-new" autocomplete="off" id="nomeResponsavel-new" required>
+                        </div>
+
+                    </div>
+
+                    <div class="row-items">
 
                         <div class="field-group">
                             <label>CPF</label>
@@ -161,40 +180,40 @@
                         </div>
 
                         <div class="field-group">
-                            <label>CNS - Cartão Nacional de Saúde</label>
-                            <input type="text" name="cnsBebeInput-new" autocomplete="off">
+                            <label>Cartão SUS</label>
+                            <input type="text" name="cartaoSUSBebeInput-new" autocomplete="off" minlength="20" maxlength="20" id="cartaoSUSBebe-new" required>
                         </div>
 
                         <div class="field-group">
-                            <label>Sinan</label>
-                            <input type="text" name="sinanBebeInput-new" autocomplete="off">
+                            <label>Data de Nascimento</label>
+                            <input type="date" name="dataNascimentoBebeInput-new" autocomplete="off" id="dataNascimentoBebe-new" required>
                         </div>
-                            
+
                         <div class="field-group">
-                            <label>Prontuário</label>
-                            <input type="text" name="prontuarioBebeInput-new" autocomplete="off">
+                            <label>Nome Social</label>
+                            <input type="text" name="nomeSocialBebeInput-new" autocomplete="off" id="nomeSocialBebe-new">
+                        </div>
+
+                    </div>
+
+                    <div class="row-items">
+                        
+                        <div class="field-group wide">
+                            <label>Endereço</label>
+                            <input type="text" name="enderecoInput-new" autocomplete="off" id="endereco-new">
+                        </div>
+
+                        <div class="field-group wide">
+                            <label class="label-control">Telefone</label>
+                            <input type="tel" name="telefoneInput-new" autocomplete="off" id="telefone-new" minlength="13" maxlength="13" pattern="[1-9]{2}-[0-9]{9}">
                         </div>
 
                     </div>
                     
-                    <div class="row-items">
-                        
-                        <div class="field-group wide">
-                            <label>Nome Completo - Civil</label>
-                            <input type="text" name="nomeBebeInput-new" autocomplete="off" required>
-                        </div>
-
-                        <div class="field-group wide">
-                            <label class="label-control">Nome Completo do Responsável</label>
-                            <input type="text" name="nomeBebeInput-new" autocomplete="off" required>
-                        </div>
-
-                    </div>
-
                     <div class="botoes">
                         <div class="row-buttons">
                             <button class="btn" id="voltar" onclick="showForm('search-form')"> <i class="fa-solid fa-angle-left"></i> Voltar </button>
-                            <button class="btn" id="salvar"> <i class="fa-solid fa-floppy-disk"></i> Salvar </button>
+                            <button class="btn" id="salvar" onclick="cadastrarBebe()"> <i class="fa-solid fa-floppy-disk"></i> Salvar </button>
                         </div>
                     </div>
                 </div>
@@ -211,13 +230,10 @@
 
     </main>
 
-    <script src="script/cpf.js"></script>
-    <script src="script/forms.js"></script>
+    <script src="../js/cpf.js"></script>
+    <script src="../js/tel.js"></script>
+    <script src="../js/forms.js"></script>
 
 </body>
 
-
 </html>
-
-<?php
-?>
