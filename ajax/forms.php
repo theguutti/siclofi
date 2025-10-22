@@ -188,7 +188,6 @@ elseif ($acao === 'select') {
     exit;
 }
 
-
 else {
     echo json_encode(["status" => "erro", "mensagem" => "Ação inválida."]);
     $mysqli->close();
