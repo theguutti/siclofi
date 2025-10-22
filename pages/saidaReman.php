@@ -258,7 +258,7 @@ try {
 
                 <div class="conteudo">
 
-                    <div class="row-items"> <!-- TODO: ao selecionar alguma fi, mudar as opcoes de validade e lote -->
+                    <div class="row-items">
 
                         <div class="field-group">
                             <label class="label">Fórmula Infantil</label>
@@ -370,3 +370,4 @@ try {
 
 </body>
 </html>
+
