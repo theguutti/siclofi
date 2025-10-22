@@ -314,6 +314,42 @@ verificarLogin();
     </main>
 
     <script src="../js/forms.js"></script>
-
+    <script src="../js/carregarLotes.js"></script>
+    <script>
+        // CONFIGURAR EVENTOS PARA O FORM NEW
+        document.addEventListener('DOMContentLoaded', function() {
+            const fiNew = document.getElementById('fi-new');
+            const validadeNew = document.getElementById('validade-new');
+            const loteNew = document.getElementById('lote-new');
+            
+            if (fiNew && validadeNew && loteNew) {
+                // EVENTO: SELECIONAR FÓRMULA
+                fiNew.addEventListener('change', function() {
+                    carregarLotesPorFormula(this.value, validadeNew, loteNew);
+                });
+                
+                // EVENTO: SELECIONAR VALIDADE
+                validadeNew.addEventListener('change', function() {
+                    carregarLotesPorValidade(this.value, loteNew);
+                });
+            }
+            
+            // CONFIGURAR EVENTOS PARA O FORM SEARCH
+            const fiSearch = document.getElementById('fi-search');
+            const validadeSearch = document.getElementById('validade-search');
+            const loteSearch = document.getElementById('lote-search');
+            
+            if (fiSearch && validadeSearch && loteSearch) {
+                fiSearch.addEventListener('change', function() {
+                    carregarLotesPorFormula(this.value, validadeSearch, loteSearch);
+                });
+                
+                validadeSearch.addEventListener('change', function() {
+                    carregarLotesPorValidade(this.value, loteSearch);
+                });
+            }
+        });
+    </script>
+    
 </body>
 </html>
