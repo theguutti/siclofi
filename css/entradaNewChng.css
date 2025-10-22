@@ -1,39 +1,3 @@
-select {
-    width: 440px;
-    height: 30px;
-    padding: 14px 40px 14px 15px;
-    border: none;
-    border-radius: 5px;
-    outline: none;
-    margin-top: 4px;
-    margin-bottom: 20px;
-    background-color: #EDEDED;
-
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: calc(100% - 15px) center;
-    background-size: 16px;
-}
-
-.btn{
-    font-size: 1.6vh;
-    width: 115px;
-    height: 35px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #2f8b23;
-    color: #EDEDED;
-}
-
-#consultar{
-    background-color: #D23737;
-}
-
 .container{
     background-color: #EDEDED;
     display: flex;
@@ -43,7 +7,7 @@ select {
     overflow: hidden;
 }
 
-.tabel-box{
+.form-box{
     display: block;
 }
 
@@ -64,19 +28,53 @@ select {
     font-weight: bold;
 }
 
-#UDM{
-    margin: 0.5vh 1vh 1vh 1vh;
-    font-size: 1.5vh;
-}
-
 .conteudo{
     background-color: #EDEDED;
-    width: 1600px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     border-radius: 0 0 10px 10px;
     overflow: hidden;
     padding: 0 4vh 2vh 4vh;
+}
+
+select {
+    width: 440px;
+    height: 30px;
+    padding: 14px 40px 14px 15px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: calc(100% - 15px) center;
+    background-size: 16px;
+}
+
+.btn{
+    font-size: 1.6vh;
+    width: 115px;
+    height: 35px;
+    margin-top: 2vh;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #2f8b23;
+    color: #EDEDED;
+}
+
+#consultar{
+    background-color: #D23737;
+}
+
+#UDM{
+    margin: 0.5vh 1vh 1vh 1vh;
+    font-size: 1.5vh;
 }
 
 .label{
@@ -87,8 +85,8 @@ select {
 .field-group{
     display: flex;
     flex-direction: column;
-    flex: 1;
     margin-top: 0;
+    flex: 1;
 }
 
 .field-group label{
@@ -96,10 +94,36 @@ select {
     margin-bottom: 4px;
 }
 
+.field-group input{
+    width: 100%;
+    height: 30px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
 .row-items{
+    width: 100%;
     display: flex;
     gap: 20px;
     margin-top: 1vh;
+}
+
+.row-items .field-group{
+    margin-top: 0;
+}
+
+.row-items .field-group input{
+    width: 440px;
+}
+
+.row-items .field-group.wide input{
+    width: 733px;
+}
+
+.row-items .field-group.wide select{
+    width: 733px;
 }
 
 #medicamento{
@@ -108,4 +132,58 @@ select {
 
 #validade, #lote{
     width: 418px;
+}
+
+/* TABELA */
+.tabelaResultado {
+	height: 100%;
+    margin-top: 1Vh;
+	border-collapse:collapse;
+	border-spacing:3px;
+}
+
+.tabelaResultado th {
+	border:1px solid #d23737;
+	background: #d23737;
+	color: #ededed;
+}
+
+.tabelaResultado td {
+	background: #ededed;
+    color: #000000;
+    padding-top: 0.5vh;
+}
+
+.cpfdata{
+    width: 15vh;
+	text-align:left;
+}
+
+.namedata{
+    width: 53.28vh;
+	text-align:left;
+}
+
+.responsaveldata{
+    width: 53.28vh;
+	text-align:left;
+}
+
+.nascimentodata{
+    width: 11vh;
+    text-align:center;
+}
+
+.acao{
+    width: 23vh;
+}
+
+#visualizar{
+    height: 20px;
+    width: 15vh;
+    background-color: transparent;
+    color: #D23737;
+    display: block;
+    margin: auto;
+    font-weight: bold;
 }
