@@ -1,11 +1,16 @@
+<?php
+session_start();
+require_once '../functions/auth.php';
+verificarLogin();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Inicial</title>
-    <link rel="stylesheet" href="css/styleInicial.css">
-    <link rel="stylesheet" href="css/entradaNewChng.css">
+    <link rel="stylesheet" href="../css/styleInicial.css">
+    <link rel="stylesheet" href="../css/entradaNewChng.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
@@ -101,7 +106,7 @@
                 </li>
             </ul>
         </div>
-        <form action="logout.php" method="post">
+        <form action="../logout.php" method="post">
             <div id="logout">
                 <button type="submit" id="logoutBtn">
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -114,42 +119,105 @@
     <main>
         <div class="container">
             
-            <div class="table-box">
+            <div class="form-box">
 
                 <div class="titulo">
                     <label id="titulo">Estoque - Entrada Nova</label>
-                    <label id="UDM">UDM Exemplo</label>
+                    <label id="UDM"><?php echo htmlspecialchars($_SESSION['usuario_udm_nome'] ?? 'UDM'); ?></label>
                 </div>
 
                 <div class="conteudo">
 
                     <div class="row-items">
+
                         <div class="field-group">
-                            <label class="label">Tipo de Entrada</label>
-                            <select required>
+                            <label>Tipo de Entrada</label>
+                            <select id="tipoEntrada" required>
                                 <option value="Selecione"></option>
                                 <option value="Remanejamento">Remanejamento</option>
-                                <option value="Tratamento ILTB">Tratamento ILTB</option>
                                 <option value="Maternidade">Maternidade</option>
-                                <option value="Remanejamento SICLOM-HIV">Remanejamento SICLOM-HIV</option>
                             </select>
                         </div>
+
+                    </div>
+
+                    <div class="row-items">
+
+                        <div class="field-group">
+                            <label>Data de Entrada</label>
+                            <input type="date" name="dataEntradaInput" autocomplete="off" id="dataEntrada" required>
+                        </div>
+
+                    </div>
+
+                    <div class="row-items">
+
+                        <div class="field-group wide">
+                            <label>Origem</label>
+                            <select id="origemEntrada" required>
+                                <option value="Selecione"></option>
+                                <option value="SMSniteroi">SMS - Niterói</option>
+                                <option value="SMSrj">SMS - Rio de Janeiro</option>
+                                <option value="SMSduquedecaxias">SMS - Duque de Caxias</option>
+                                <option value="SMSsaogoncalo">SMS - São Gonçalo</option>
+                                <option value="SMSvoltaredonda">SMS - Volta Redonda</option>
+                                <option value="SMSpetropolis">SMS - Petrópolis</option>
+                                <option value="SMSmangaratiba">SMS - Mangaratiba</option>
+                                <option value="SMSangradosreis">SMS - Angra dos Reis</option>
+                                <option value="SESrj">SES - Rio de Janeiro</option>
+                                <option value="CErj">CE de Atenção Básica do Rio de Janeiro</option>
+                                <option value="CMrj">CM de Atenção Básica do Rio de Janeiro</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
+
+                        <div class="field-group wide">
+                            <label>Fórmula Infantil</label>
+                            <select id="formulaNumeracao" required>
+                                <option value="Selecione"></option>
+                                <?php
+                                $stmt = $pdo->query("SELECT numeracao, nome, faixaEtaria FROM formulaInfantil ORDER BY faixaEtaria");
+                                while($formula = $stmt->fetch()) {
+                                    echo "<option value='{$formula['numeracao']}'>{$formula['nome']}</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="row-items">
+
+                        <div class="field-group wide">
+                            <label>Data de Validade</label>
+                            <input type="date" name="dataValidadeInput" autocomplete="off" id="dataValidade" required></input>
+                        </div>
+
+                        <div class="field-group wide">
+                            <label>Número do Lote</label>
+                            <input type="text" name="numLoteInput" autocomplete="off" id="numLote" required></input>
+                        </div>
+
+                    </div>
+
+                    <div class="row-items">
+
+                        <div class="field-group">
+                            <label>Quantidade</label>
+                            <input type="text" name="qtdeEntradaInput" autocomplete="off" id="qtdeEntrada" required></input>
+                        </div>
+
                     </div>
                     
-                    <button class="btn" id="adicionar" onclick=""> <i class="fa-solid fa-plus"></i> Adicionar </button>
-
-                    <div class="field-group">
-                        
-                    </div>
-
-                </div>
+                    <button class="btn" id="adicionar" onclick="cadastrarLote()"> <i class="fa-solid fa-plus"></i> Adicionar </button>
 
             </div>
 
         </div>
-    </main>
-</body>
 
+    </main>
+
+    <script src="../js/cadastrarLote.js"></script>
+
+</body>
 </html>
-<?php
-?>
