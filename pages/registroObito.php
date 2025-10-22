@@ -1,11 +1,16 @@
+<?php
+session_start();
+require_once '../functions/auth.php';
+verificarLogin();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Inicial</title>
-    <link rel="stylesheet" href="css/styleInicial.css">
-    <link rel="stylesheet" href="css/cadBeberegObito.css">
+    <link rel="stylesheet" href="../css/styleInicial.css">
+    <link rel="stylesheet" href="../css/cadBeberegObito.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
@@ -101,7 +106,7 @@
                 </li>
             </ul>
         </div>
-        <form action="logout.php" method="post">
+        <form action="../logout.php" method="post">
             <div id="logout">
                 <button type="submit" id="logoutBtn">
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -135,8 +140,56 @@
                     
                     <div class="botoes">
                         <div class="row-buttons">
-                            <button class="btn" id="consultar" onclick="validarConsultaCADASTRO()"> <i class="fa-solid fa-magnifying-glass"></i> Consultar </button>
+                            <button class="btn" id="consultar" onclick="consultarBebe()"> <i class="fa-solid fa-magnifying-glass"></i> Consultar </button>
                         </div>
+                    </div>
+
+                    <hr style="margin: 2vh 0 1vh 0; border: 1px solid #D23737;">
+
+                    <div class="field-group">
+                        <label>Resultados</label>
+
+                        <table class="tabelaResultado">
+                            <thead>
+                                <tr>
+                                    <th>CPF</th>
+                                    <th>Nome Completo</th>
+                                    <th>Nome do Responsável</th>
+                                    <th>Nascimento</th>
+                                    <th>Ação<th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="cpfdata">155.631.827-89</td>
+                                    <td class="namedata">Íkaro Nogueira Rossotti</td>
+                                    <td class="responsaveldata">Aldenísia Helena Nogueira</td>
+                                    <td class="nascimentodata">16/04/2007</td>
+                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="cpfdata">999.999.999-99</td>
+                                    <td class="namedata">Nome completo muito longo caralho merda ainda pode ser maior essa</td>
+                                    <td class="responsaveldata">Nome completo muito longo caralho merda nao é possivel como eu vou</td>
+                                    <td class="nascimentodata">99/99/9999</td>
+                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="cpfdata">&nbsp;</td>
+                                    <td class="namedata">&nbsp;</td>
+                                    <td class="responsaveldata">&nbsp;</td>
+                                    <td class="nascimentodata">&nbsp;</td>
+                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="cpfdata">&nbsp;</td>
+                                    <td class="namedata">&nbsp;</td>
+                                    <td class="responsaveldata">&nbsp;</td>
+                                    <td class="nascimentodata">&nbsp;</td>
+                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                 </div>
@@ -155,11 +208,10 @@
 
     </main>
 
-    <script src="script/cpf.js"></script>
-    <script src="script/forms.js"></script>
+    <script src="../js/cpf.js"></script>
+    <script src="../js/tel.js"></script>
+    <script src="../js/forms.js"></script>
+    <script src="../js/buscarBebe.js"></script>
 
 </body>
-
 </html>
-<?php
-?>
