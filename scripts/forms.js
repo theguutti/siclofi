@@ -86,28 +86,31 @@ async function cadastrarBebe() {
 
 // CONSULTAR BEBÊ
 async function consultarBebe() {
-  try {
-    if (!validarConsultaCADASTRO()) return;
-
-    const nome = document.querySelector('input[name="nomeBebeInput-search"]')?.value.trim() ?? "";
-    const cpf = document.querySelector('input[name="cpfBebeInput-search"]')?.value.trim() ?? "";
-
-    const formData = new FormData();
-    formData.append("acao", "select");
-    formData.append("nome", nome);
-    formData.append("cpf", cpf);
-
-    const resp = await fetch("../ajax/forms.php", { method: "POST", body: formData });
-    const json = await resp.json();
-
-    if (json.status === "sucesso") {
-      console.table(json.dados);
-      showModal("Consulta realizada. Veja resultados no console (F12 → Console).");
-    } else {
-      showModal(json.mensagem || "Nenhum resultado.");
+    try {
+        const nomeInput = document.querySelector('input[name="nomeBebeInput-search"]');
+        const cpfInput = document.querySelector('input[name="cpfBebeInput-search"]');
+        const tbody = document.querySelector('.tabelaResultado tbody');
+        
+        if (!nomeInput || !cpfInput || !tbody) {
+            console.error('Elementos não encontrados!');
+            showModal('Erro ao localizar campos do formulário');
+            return;
+        }
+        
+        const nome = nomeInput.value.trim();
+        const cpf = cpfInput.value.trim();
+        
+        // VALIDAÇÃO: PELO MENOS UM CAMPO PREENCHIDO
+        if (nome === '' && cpf === '') {
+            showModal('Preencha pelo menos um campo (Nome ou CPF) para consultar');
+            return;
+        }
+        
+        // BUSCAR E ATUALIZAR TABELA
+        await buscarBebeTabela(nome, cpf, tbody);
+        
+    } catch (err) {
+        console.error('Erro:', err);
+        showModal('Erro ao realizar consulta');
     }
-  } catch (err) {
-    console.error(err);
-    showModal("Erro na requisição de consulta.");
-  }
 }
