@@ -209,7 +209,7 @@ verificarLogin();
 
                     </div>
                     
-                    <button class="btn" id="adicionar" onclick="cadastrarLote()"> <i class="fa-solid fa-plus"></i> Adicionar </button>
+                    <button class="btn" id="adicionar" onclick=""> <i class="fa-solid fa-plus"></i> Adicionar </button>
 
             </div>
 
@@ -217,7 +217,7 @@ verificarLogin();
 
     </main>
 
-    <script src="../js/cadastrarLote.js"></script>
+    <script src="../js/carregarLotes.js"></script>
 
 </body>
 </html>
