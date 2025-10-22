@@ -20,12 +20,13 @@ try {
 // BUSCAR UDMs DO BANCO
 try {
     $stmt = $pdo->query("
-        SELECT DISTINCT udm 
-        FROM farmaceutico 
-        WHERE status = 'ativo'
-        ORDER BY udm
+        SELECT DISTINCT u.codigo, u.nome 
+        FROM udm u 
+        INNER JOIN farmaceutico f ON f.udm = u.codigo
+        WHERE f.status = 'ativo' AND u.ativo = TRUE
+        ORDER BY u.nome
     ");
-    $udms = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    $udms = $stmt->fetchAll();
 } catch(PDOException $e) {
     $udms = [];
 }
@@ -175,9 +176,8 @@ try {
                             <select id="udm-new">
                                 <option value="Selecione"></option>
                                 <?php foreach($udms as $udm): ?>
-                                <option value="<?php echo htmlspecialchars($udm); ?>" 
-                                    <?php echo (isset($_POST['udm']) && $_POST['udm'] === $udm) ? 'selected' : ''; ?>>
-                                    <?php echo htmlspecialchars($udm); ?>
+                                <option value="<?php echo htmlspecialchars($udm['codigo']); ?>">
+                                    <?php echo htmlspecialchars($udm['nome']); ?>
                                 </option>
                                 <?php endforeach; ?>
                             </select>
@@ -352,6 +352,50 @@ try {
     </main>
 
     <script src="../js/forms.js"></script>
+    <script src="../js/carregarLotes.js"></script>
+    <script>
+        // CONFIGURAR EVENTOS PARA O FORM NEW
+        document.addEventListener('DOMContentLoaded', function() {
+            const fiNew = document.getElementById('fi-new');
+            const validadeNew = document.getElementById('validade-new');
+            const loteNew = document.getElementById('lote-new');
+            
+            if (fiNew && validadeNew && loteNew) {
+                // EVENTO: SELECIONAR FÓRMULA
+                fiNew.addEventListener('change', function() {
+                    carregarLotesPorFormula(this.value, validadeNew, loteNew);
+                });
+                
+                // EVENTO: SELECIONAR VALIDADE
+                validadeNew.addEventListener('change', function() {
+                    carregarLotesPorValidade(this.value, loteNew);
+                });
+            }
+            
+            // CONFIGURAR EVENTOS PARA O FORM SEARCH
+            const fiSearch = document.getElementById('fi-search');
+            const validadeSearch = document.getElementById('validade-search');
+            const loteSearch = document.getElementById('lote-search');
+            
+            if (fiSearch && validadeSearch && loteSearch) {
+                fiSearch.addEventListener('change', function() {
+                    carregarLotesPorFormula(this.value, validadeSearch, loteSearch);
+                });
+                
+                validadeSearch.addEventListener('change', function() {
+                    carregarLotesPorValidade(this.value, loteSearch);
+                });
+            }
+            
+            // EVENTO: SELECIONAR LOTE → BUSCAR QUANTIDADE
+            loteNew.addEventListener('change', function() {
+                const qtdeEstoque = document.getElementById('qtdeEstqInput-new');
+                if (qtdeEstoque) {
+                    buscarQuantidadeEstoque(this.value, qtdeEstoque);
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
