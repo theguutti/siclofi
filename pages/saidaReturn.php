@@ -1,11 +1,16 @@
+<?php
+session_start();
+require_once '../functions/auth.php';
+verificarLogin();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Inicial</title>
-    <link rel="stylesheet" href="css/styleInicial.css">
-    <link rel="stylesheet" href="css/saidas.css">
+    <link rel="stylesheet" href="../css/styleInicial.css">
+    <link rel="stylesheet" href="../css/saidas.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
@@ -101,7 +106,7 @@
                 </li>
             </ul>
         </div>
-        <form action="logout.php" method="post">
+        <form action="../logout.php" method="post">
             <div id="logout">
                 <button type="submit" id="logoutBtn">
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -135,10 +140,15 @@
                     <div class="row-items">
                         
                         <div class="field-group wide">
-                            <label class="label">Medicamento</label>
-                            <select id="medicamento-new">
+                            <label class="label">Fórmula Infantil</label>
+                            <select id="fi-new">
                                 <option value="Selecione"></option>
-                                <option value=""></option>
+                                <?php
+                                $stmt = $pdo->query("SELECT numeracao, nome, faixaEtaria FROM formulaInfantil ORDER BY faixaEtaria");
+                                while($formula = $stmt->fetch()) {
+                                    echo "<option value='{$formula['numeracao']}'>{$formula['nome']}</option>";
+                                }
+                                ?>
                             </select>
                         </div>
 
@@ -178,7 +188,7 @@
 
                     <div class="botoes">
                         <div class="row-buttons">
-                            <button class="btn" id="voltar" onclick="showForm('search-saidaReman-form')"> <i class="fa-solid fa-angle-left"></i> Consultar </button>
+                            <button class="btn" id="voltar" onclick="showForm('search-saidaReman-form')"> <i class="fa-solid fa-right-left"></i> Consultar </button>
                             <button class="btn" id="adicionar"> <i class="fa-solid fa-floppy-disk"></i> Adicionar </button>
                         </div>
                     </div>
@@ -195,16 +205,18 @@
 
                 <div class="conteudo">
 
-                    <div class="row-items"> <!-- TODO: ao selecionar algum medicamento, mudar as opcoes de validade e lote -->
+                    <div class="row-items"> <!-- TODO: ao selecionar alguma fi, mudar as opcoes de validade e lote -->
 
                         <div class="field-group">
-                            <label class="label">Medicamento</label>
-                            <select id="medicamento-search" required>
+                            <label class="label">Fórmula Infantil</label>
+                            <select id="fi-search" required>
                                 <option value="Selecione"></option>
-                                <option value="Medicamento1">Medicamento 1</option>
-                                <option value="Medicamento2">Medicamento 2</option>
-                                <option value="Medicamento3">Medicamento 3</option>
-                                <option value="Medicamento4">Medicamento 4</option>
+                                <?php
+                                $stmt = $pdo->query("SELECT numeracao, nome, faixaEtaria FROM formulaInfantil ORDER BY faixaEtaria");
+                                while($formula = $stmt->fetch()) {
+                                    echo "<option value='{$formula['numeracao']}'>{$formula['nome']}</option>";
+                                }
+                                ?>
                             </select>
                         </div>
 
@@ -226,17 +238,57 @@
                     
                     <div class="botoes">
                         <div class="row-buttons">
-                            <button class="btn" id="voltar" onclick="showForm('new-saidaReman-form')"> <i class="fa-solid fa-angle-left"></i> Adicionar </button>
+                            <button class="btn" id="voltar" onclick="showForm('new-saidaReman-form')"> <i class="fa-solid fa-right-left"></i> Adicionar </button>
                             <button class="btn" id="consultar" onclick=""> <i class="fa-solid fa-magnifying-glass"></i> Consultar </button>
                         </div>
                     </div>
 
-                    <hr style="margin: 2vh 0 2vh 0; border: 1px solid #D23737;">
+                    <hr style="margin: 2vh 0 1vh 0; border: 1px solid #D23737;">
 
-                    <label class="label">Lista de Medicamentos</label>
+                    <div class="field-group">
+                        <label class="label">Resultados</label>
 
-                    <div class="field-group"> <!-- TODO: lista -->
-                        
+                        <table class="tabelaResultado">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Lote</th>
+                                    <th>Data de Validade</th>
+                                    <th>Data de Entrada</th>
+                                    <th>Ação<th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="tipodata">Remanejamento</td>
+                                    <td class="lotedata">84J3</td>
+                                    <td class="datavalidadedata">31/03/2026</td>
+                                    <td class="dataentradadata">23/09/2025</td>
+                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="cpfdata">Maternidade</td>
+                                    <td class="namedata">90F1</td>
+                                    <td class="responsaveldata">09/09/2026</td>
+                                    <td class="nascimentodata">16/04/2025</td>
+                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="cpfdata">&nbsp;</td>
+                                    <td class="namedata">&nbsp;</td>
+                                    <td class="responsaveldata">&nbsp;</td>
+                                    <td class="nascimentodata">&nbsp;</td>
+                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="cpfdata">&nbsp;</td>
+                                    <td class="namedata">&nbsp;</td>
+                                    <td class="responsaveldata">&nbsp;</td>
+                                    <td class="nascimentodata">&nbsp;</td>
+                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                 </div>
@@ -246,10 +298,7 @@
         </div>
     </main>
 
-    <script src="script/forms.js"></script>
+    <script src="../js/forms.js"></script>
 
 </body>
-
 </html>
-<?php
-?>
