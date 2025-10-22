@@ -161,32 +161,11 @@ verificarLogin();
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="cpfdata">155.631.827-89</td>
-                                    <td class="namedata">Íkaro Nogueira Rossotti</td>
-                                    <td class="responsaveldata">Aldenísia Helena Nogueira</td>
-                                    <td class="nascimentodata">16/04/2007</td>
-                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
-                                </tr>
-                                <tr>
-                                    <td class="cpfdata">999.999.999-99</td>
-                                    <td class="namedata">Nome completo muito longo caralho merda ainda pode ser maior essa</td>
-                                    <td class="responsaveldata">Nome completo muito longo caralho merda nao é possivel como eu vou</td>
-                                    <td class="nascimentodata">99/99/9999</td>
-                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
-                                </tr>
-                                <tr>
-                                    <td class="cpfdata">&nbsp;</td>
-                                    <td class="namedata">&nbsp;</td>
-                                    <td class="responsaveldata">&nbsp;</td>
-                                    <td class="nascimentodata">&nbsp;</td>
-                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
-                                </tr>
-                                <tr>
-                                    <td class="cpfdata">&nbsp;</td>
-                                    <td class="namedata">&nbsp;</td>
-                                    <td class="responsaveldata">&nbsp;</td>
-                                    <td class="nascimentodata">&nbsp;</td>
-                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
+                                    <td class="cpfdata"></td>
+                                    <td class="namedata"></td>
+                                    <td class="responsaveldata"></td>
+                                    <td class="nascimentodata"></td>
+                                    <td class="acao"><button class="btn" id="visualizar" onclick=""></button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -212,6 +191,60 @@ verificarLogin();
     <script src="../js/tel.js"></script>
     <script src="../js/forms.js"></script>
     <script src="../js/buscarBebe.js"></script>
+    <script>
+        // MESMA LÓGICA DO cadastroBebe.php
+        document.addEventListener('DOMContentLoaded', function() {
+            const nomeInput = document.querySelector('input[name="nomeBebeInput-search"]');
+            const cpfInput = document.querySelector('input[name="cpfBebeInput-search"]');
+            const tbody = document.querySelector('.tabelaResultado tbody');
+            
+            if (nomeInput && cpfInput && tbody) {
+                let timerNome;
+                nomeInput.addEventListener('input', function() {
+                    clearTimeout(timerNome);
+                    const valorNome = this.value.trim();
+                    
+                    if (valorNome.length >= 3) {
+                        timerNome = setTimeout(() => {
+                            buscarBebeTabela(valorNome, '', tbody);
+                        }, 500);
+                    } else if (valorNome.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td class="cpfdata">&nbsp;</td>
+                                <td class="namedata">&nbsp;</td>
+                                <td class="responsaveldata">&nbsp;</td>
+                                <td class="nascimentodata">&nbsp;</td>
+                                <td class="acao">&nbsp;</td>
+                            </tr>
+                        `;
+                    }
+                });
+                
+                let timerCPF;
+                cpfInput.addEventListener('input', function() {
+                    clearTimeout(timerCPF);
+                    const valorCPF = this.value.trim();
+                    
+                    if (valorCPF.length === 14) {
+                        timerCPF = setTimeout(() => {
+                            buscarBebeTabela('', valorCPF, tbody);
+                        }, 500);
+                    } else if (valorCPF.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td class="cpfdata">&nbsp;</td>
+                                <td class="namedata">&nbsp;</td>
+                                <td class="responsaveldata">&nbsp;</td>
+                                <td class="nascimentodata">&nbsp;</td>
+                                <td class="acao">&nbsp;</td>
+                            </tr>
+                        `;
+                    }
+                });
+            }
+        });
+    </script>
 
 </body>
 </html>
