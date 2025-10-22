@@ -220,7 +220,7 @@ verificarLogin();
 
                 <div class="conteudo">
 
-                    <div class="row-items"> <!-- TODO: ao selecionar alguma formula infantil, mudar as opcoes de validade e lote -->
+                    <div class="row-items">
 
                         <div class="field-group">
                             <label class="label">Fórmula Infantil</label>
@@ -275,32 +275,11 @@ verificarLogin();
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="tipodata">Remanejamento</td>
-                                    <td class="lotedata">84J3</td>
-                                    <td class="datavalidadedata">31/03/2026</td>
-                                    <td class="dataentradadata">23/09/2025</td>
-                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
-                                </tr>
-                                <tr>
-                                    <td class="cpfdata">Maternidade</td>
-                                    <td class="namedata">90F1</td>
-                                    <td class="responsaveldata">09/09/2026</td>
-                                    <td class="nascimentodata">16/04/2025</td>
-                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
-                                </tr>
-                                <tr>
-                                    <td class="cpfdata">&nbsp;</td>
-                                    <td class="namedata">&nbsp;</td>
-                                    <td class="responsaveldata">&nbsp;</td>
-                                    <td class="nascimentodata">&nbsp;</td>
-                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
-                                </tr>
-                                <tr>
-                                    <td class="cpfdata">&nbsp;</td>
-                                    <td class="namedata">&nbsp;</td>
-                                    <td class="responsaveldata">&nbsp;</td>
-                                    <td class="nascimentodata">&nbsp;</td>
-                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
+                                    <td class="tipodata"></td>
+                                    <td class="lotedata"></td>
+                                    <td class="datavalidadedata"></td>
+                                    <td class="dataentradadata"></td>
+                                    <td class="acao"><button class="btn" id="visualizar" onclick=""></button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -353,3 +332,4 @@ verificarLogin();
     
 </body>
 </html>
+
