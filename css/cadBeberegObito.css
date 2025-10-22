@@ -15,6 +15,7 @@
     display: block;
 }
 
+
 .titulo{
     background-color: #D5D5D5;
     width: 1600px;
@@ -116,6 +117,16 @@
     color: #EDEDED;
 }
 
+#visualizar{
+    height: 20px;
+    width: 15vh;
+    background-color: transparent;
+    color: #D23737;
+    display: block;
+    margin: auto;
+    font-weight: bold;
+}
+
 /* NEW-FORM */
 .label-control-row{
     font-weight: bold;
@@ -160,7 +171,7 @@
 }
 
 .modal-box {
-    background-color: white;
+    background-color: #EDEDED;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -180,7 +191,7 @@
 
 .modal-box button {
     background-color: #D23737;
-    color: white;
+    color: #EDEDED;
     border: none;
     padding: 10px 30px;
     border-radius: 5px;
@@ -190,4 +201,48 @@
 
 .modal-box button:hover {
     background-color: #b02d2d;
+}
+
+/* TABELA */
+.tabelaResultado {
+	height: 100%;
+    margin-top: 1vh;
+	border-collapse:collapse;
+	border-spacing:3px;
+}
+
+.tabelaResultado th {
+	border:1px solid #d23737;
+	background: #d23737;
+	color: #ededed;
+}
+
+.tabelaResultado td {
+	background: #ededed;
+    color: #000000;
+    padding-top: 0.5vh;
+}
+
+.cpfdata{
+    width: 15vh;
+	text-align:left;
+}
+
+.namedata{
+    width: 53.28vh;
+	text-align:left;
+}
+
+.responsaveldata{
+    width: 53.28vh;
+	text-align:left;
+}
+
+.nascimentodata{
+    width: 11vh;
+    text-align:center;
+}
+
+.acao{
+    width: 23vh;
 }
