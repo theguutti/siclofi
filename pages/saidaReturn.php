@@ -205,7 +205,7 @@ verificarLogin();
 
                 <div class="conteudo">
 
-                    <div class="row-items"> <!-- TODO: ao selecionar alguma fi, mudar as opcoes de validade e lote -->
+                    <div class="row-items">
 
                         <div class="field-group">
                             <label class="label">Fórmula Infantil</label>
@@ -260,32 +260,11 @@ verificarLogin();
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="tipodata">Remanejamento</td>
-                                    <td class="lotedata">84J3</td>
-                                    <td class="datavalidadedata">31/03/2026</td>
-                                    <td class="dataentradadata">23/09/2025</td>
-                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
-                                </tr>
-                                <tr>
-                                    <td class="cpfdata">Maternidade</td>
-                                    <td class="namedata">90F1</td>
-                                    <td class="responsaveldata">09/09/2026</td>
-                                    <td class="nascimentodata">16/04/2025</td>
-                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
-                                </tr>
-                                <tr>
-                                    <td class="cpfdata">&nbsp;</td>
-                                    <td class="namedata">&nbsp;</td>
-                                    <td class="responsaveldata">&nbsp;</td>
-                                    <td class="nascimentodata">&nbsp;</td>
-                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
-                                </tr>
-                                <tr>
-                                    <td class="cpfdata">&nbsp;</td>
-                                    <td class="namedata">&nbsp;</td>
-                                    <td class="responsaveldata">&nbsp;</td>
-                                    <td class="nascimentodata">&nbsp;</td>
-                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
+                                    <td class="tipodata"></td>
+                                    <td class="lotedata"></td>
+                                    <td class="datavalidadedata"></td>
+                                    <td class="dataentradadata"></td>
+                                    <td class="acao"><button class="btn" id="visualizar" onclick=""></button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -299,6 +278,42 @@ verificarLogin();
     </main>
 
     <script src="../js/forms.js"></script>
+    <script src="../js/carregarLotes.js"></script>
+    <script>
+        // CONFIGURAR EVENTOS PARA O FORM NEW
+        document.addEventListener('DOMContentLoaded', function() {
+            const fiNew = document.getElementById('fi-new');
+            const validadeNew = document.getElementById('validade-new');
+            const loteNew = document.getElementById('lote-new');
+            
+            if (fiNew && validadeNew && loteNew) {
+                // EVENTO: SELECIONAR FÓRMULA
+                fiNew.addEventListener('change', function() {
+                    carregarLotesPorFormula(this.value, validadeNew, loteNew);
+                });
+                
+                // EVENTO: SELECIONAR VALIDADE
+                validadeNew.addEventListener('change', function() {
+                    carregarLotesPorValidade(this.value, loteNew);
+                });
+            }
+            
+            // CONFIGURAR EVENTOS PARA O FORM SEARCH
+            const fiSearch = document.getElementById('fi-search');
+            const validadeSearch = document.getElementById('validade-search');
+            const loteSearch = document.getElementById('lote-search');
+            
+            if (fiSearch && validadeSearch && loteSearch) {
+                fiSearch.addEventListener('change', function() {
+                    carregarLotesPorFormula(this.value, validadeSearch, loteSearch);
+                });
+                
+                validadeSearch.addEventListener('change', function() {
+                    carregarLotesPorValidade(this.value, loteSearch);
+                });
+            }
+        });
+    </script>
 
 </body>
 </html>
