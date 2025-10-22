@@ -5,7 +5,7 @@ function showForm(formId) {
   if (el) el.classList.add('active');
 }
 
-// ALERTA - PREENCHER NO MINIMO UM CAMPO
+// ALERTA
 function showModal(message) {
   const modalMsg = document.getElementById('modalMessage');
   if (modalMsg) modalMsg.textContent = message;
@@ -39,7 +39,8 @@ function validarConsultaCADASTRO() {
   return true;
 }
 
-// AJAX - LEMBRAR DE USAR CONSOLE PRA CHECAR RESULTADOS/SAÍDAS
+// AJAX
+
 // CADASTRAR BEBÊ
 async function cadastrarBebe() {
   try {
