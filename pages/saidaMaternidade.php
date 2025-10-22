@@ -150,7 +150,7 @@ try {
             <div class="form-box active" id="new-saidaReman-form">
 
                 <div class="titulo">
-                    <label id="titulo">Saída - Remanejamento</label>
+                    <label id="titulo">Saída - Maternidade</label>
                 </div>
 
                 <div class="conteudo"> 
@@ -253,7 +253,7 @@ try {
             <div class="form-box" id="search-saidaReman-form">
 
                 <div class="titulo">
-                    <label id="titulo">Saída - Consultar Remanejamento</label>
+                    <label id="titulo">Saída - Consultar Maternidade</label>
                 </div>
 
                 <div class="conteudo">
