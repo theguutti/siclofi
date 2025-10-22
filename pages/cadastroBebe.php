@@ -123,12 +123,12 @@ verificarLogin();
             <div class="form-box active" id="search-form">
 
                 <div class="titulo">
-                    <label id="titulo">Cadastro Bebê</label>
+                    <label id="titulo">Cadastro de Bebê</label>
                 </div>
 
                 <div class="conteudo">
 
-                    <div class="field-group">
+                   <div class="field-group">
                         <label>Nome do Bebê</label>
                         <input type="text" name="nomeBebeInput-search" autocomplete="off">
                     </div>
@@ -137,7 +137,7 @@ verificarLogin();
                         <label>CPF do Bebê</label>
                         <input type="text" name="cpfBebeInput-search" autocomplete="off" minlength="14" maxlength="14" id="cpf-search">
                     </div>
-                    
+                        
                     <div class="botoes">
                         <div class="row-buttons">
                             <button class="btn" id="consultar" onclick="consultarBebe()"> <i class="fa-solid fa-magnifying-glass"></i> Consultar </button>
@@ -145,10 +145,58 @@ verificarLogin();
                         </div>
                     </div>
 
+                    <hr style="margin: 2vh 0 1vh 0; border: 1px solid #D23737;">
+
+                    <div class="field-group">
+                        <label>Resultados</label>
+
+                        <table class="tabelaResultado">
+                            <thead>
+                                <tr>
+                                    <th>CPF</th>
+                                    <th>Nome Completo</th>
+                                    <th>Nome do Responsável</th>
+                                    <th>Nascimento</th>
+                                    <th>Ação<th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="cpfdata">155.631.827-89</td>
+                                    <td class="namedata">Íkaro Nogueira Rossotti</td>
+                                    <td class="responsaveldata">Aldenísia Helena Nogueira</td>
+                                    <td class="nascimentodata">16/04/2007</td>
+                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="cpfdata">999.999.999-99</td>
+                                    <td class="namedata">Nome completo muito longo caralho merda ainda pode ser maior essa</td>
+                                    <td class="responsaveldata">Nome completo muito longo caralho merda nao é possivel como eu vou</td>
+                                    <td class="nascimentodata">99/99/9999</td>
+                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="cpfdata">&nbsp;</td>
+                                    <td class="namedata">&nbsp;</td>
+                                    <td class="responsaveldata">&nbsp;</td>
+                                    <td class="nascimentodata">&nbsp;</td>
+                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="cpfdata">&nbsp;</td>
+                                    <td class="namedata">&nbsp;</td>
+                                    <td class="responsaveldata">&nbsp;</td>
+                                    <td class="nascimentodata">&nbsp;</td>
+                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+            
 
             </div>
-            
+
             <!-- FORM ADICIONAR -->
             <div class="form-box" id="new-form">
 
@@ -166,7 +214,7 @@ verificarLogin();
                         </div>
 
                         <div class="field-group wide">
-                            <label class="label-control">Nome Completo do Responsável</label>
+                            <label>Nome Completo do Responsável</label>
                             <input type="text" name="nomeResponsavelInput-new" autocomplete="off" id="nomeResponsavel-new" required>
                         </div>
 
@@ -204,7 +252,7 @@ verificarLogin();
                         </div>
 
                         <div class="field-group wide">
-                            <label class="label-control">Telefone</label>
+                            <label>Telefone</label>
                             <input type="tel" name="telefoneInput-new" autocomplete="off" id="telefone-new" minlength="13" maxlength="13" pattern="[1-9]{2}-[0-9]{9}">
                         </div>
 
@@ -219,7 +267,7 @@ verificarLogin();
                 </div>
             </div>
         </div>
-        
+
         <div class="modal-overlay" id="messageModal">
             <div class="modal-box">
                 <h3>Atenção</h3>
@@ -227,6 +275,9 @@ verificarLogin();
                 <button onclick="closeModal()">OK</button>
             </div>
         </div>
+
+       
+</div>
 
     </main>
 
