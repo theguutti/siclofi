@@ -11,6 +11,7 @@ if ($mysqli->connect_errno) {
 
 $acao = $_POST['acao'] ?? '';
 
+// INSERT
 if ($acao === 'insert') {
     session_start();
     $cadastradoPor = $_SESSION['usuario_cpf'] ?? '';
@@ -25,7 +26,7 @@ if ($acao === 'insert') {
     $nomeSocial = trim($_POST['nomeSocial'] ?? '') ?: null;
     $dataNascimento = trim($_POST['dataNascimento'] ?? '');
     $cartaoSUS = trim($_POST['cartaoSUS'] ?? '') ?: null;
-    $responsavel = trim($_POST['responsavel'] ?? '') ?: null;   
+    $responsavel = trim($_POST['responsavel'] ?? '') ?: null;
     $enderecoResponsavel = trim($_POST['enderecoResponsavel'] ?? '') ?: null;
     $telefoneResponsavel = trim($_POST['telefoneResponsavel'] ?? '') ?: null;
 
@@ -114,6 +115,36 @@ if ($acao === 'insert') {
     exit;
 }
 
+// UPDATE
+elseif (isset($_POST['action']) && $_POST['action'] == 'update') {
+    $cpf = mysqli_real_escape_string($mysqli, $_POST['cpf']);
+    $nomeCompleto = mysqli_real_escape_string($mysqli, $_POST['nomeCompleto']);
+    $nomeSocial = mysqli_real_escape_string($mysqli, $_POST['nomeSocial']);
+    $dataNascimento = mysqli_real_escape_string($mysqli, $_POST['dataNascimento']);
+    $cartaoSUS = mysqli_real_escape_string($mysqli, $_POST['cartaoSUS']);
+    $responsavel = mysqli_real_escape_string($mysqli, $_POST['responsavel']);
+    $telefoneResponsavel = mysqli_real_escape_string($mysqli, $_POST['telefoneResponsavel']);
+    $enderecoResponsavel = mysqli_real_escape_string($mysqli, $_POST['enderecoResponsavel']);
+    
+    $sql = "UPDATE bebeHIV SET 
+            nomeCompleto = '$nomeCompleto',
+            nomeSocial = '$nomeSocial',
+            dataNascimento = '$dataNascimento',
+            cartaoSUS = '$cartaoSUS',
+            responsavel = '$responsavel',
+            telefoneResponsavel = '$telefoneResponsavel',
+            enderecoResponsavel = '$enderecoResponsavel',
+            WHERE cpf = '$cpf'";
+    
+    if ($mysqli->query($sql)) {
+        echo json_encode(['status' => 'success', 'message' => 'Bebê atualizado com sucesso!']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Erro ao atualizar: ' . $mysqli->error]);
+    }
+    exit;
+}
+
+// SELECT
 elseif ($acao === 'select') {
     $nome = trim($_POST['nome'] ?? '');
     $cpf = trim($_POST['cpf'] ?? '');
@@ -129,18 +160,17 @@ elseif ($acao === 'select') {
                 FROM bebeHIV WHERE cpf = ? ORDER BY dataCadastro DESC";
         $stmt = $mysqli->prepare($sql);
         $stmt->bind_param("s", $cpf);
-        $stmt->execute();
-        $res = $stmt->get_result();
     } else {
         $sql = "SELECT cpf, nomeCompleto, nomeSocial, DATE_FORMAT(dataNascimento,'%Y-%m-%d') as dataNascimento,
                        cartaoSUS, responsavel, telefoneResponsavel, enderecoResponsavel, dataCadastro, statusCadastro
                 FROM bebeHIV WHERE nomeCompleto LIKE ? ORDER BY dataCadastro DESC";
-        $like = "%{$nome}%";
         $stmt = $mysqli->prepare($sql);
+        $like = "%{$nome}%";
         $stmt->bind_param("s", $like);
-        $stmt->execute();
-        $res = $stmt->get_result();
     }
+
+    $stmt->execute();
+    $res = $stmt->get_result();
 
     $dados = [];
     while ($row = $res->fetch_assoc()) {
@@ -155,9 +185,9 @@ elseif ($acao === 'select') {
 
     $stmt->close();
     $mysqli->close();
-    ob_end_clean();
     exit;
 }
+
 
 else {
     echo json_encode(["status" => "erro", "mensagem" => "Ação inválida."]);
