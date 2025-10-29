@@ -41,7 +41,7 @@
 select {
     width: 440px;
     height: 30px;
-    padding: 14px 40px 14px 15px;
+    padding: 6px 40px 6px 12px;
     border: none;
     border-radius: 5px;
     outline: none;
@@ -132,58 +132,4 @@ select {
 
 #validade, #lote{
     width: 418px;
-}
-
-/* TABELA */
-.tabelaResultado {
-	height: 100%;
-    margin-top: 1Vh;
-	border-collapse:collapse;
-	border-spacing:3px;
-}
-
-.tabelaResultado th {
-	border:1px solid #d23737;
-	background: #d23737;
-	color: #ededed;
-}
-
-.tabelaResultado td {
-	background: #ededed;
-    color: #000000;
-    padding-top: 0.5vh;
-}
-
-.cpfdata{
-    width: 15vh;
-	text-align:left;
-}
-
-.namedata{
-    width: 53.28vh;
-	text-align:left;
-}
-
-.responsaveldata{
-    width: 53.28vh;
-	text-align:left;
-}
-
-.nascimentodata{
-    width: 11vh;
-    text-align:center;
-}
-
-.acao{
-    width: 23vh;
-}
-
-#visualizar{
-    height: 20px;
-    width: 15vh;
-    background-color: transparent;
-    color: #D23737;
-    display: block;
-    margin: auto;
-    font-weight: bold;
 }
