@@ -10,7 +10,7 @@ verificarLogin();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Inicial</title>
     <link rel="stylesheet" href="../css/styleInicial.css">
-    <link rel="stylesheet" href="../css/entradaNewChng.css">
+    <link rel="stylesheet" href="../css/entradaChng.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
@@ -128,12 +128,13 @@ verificarLogin();
 
                 <div class="conteudo">
 
-                    <div class="row-items"> <!-- TODO: ao selecionar alguma fi, mudar as opcoes de validade e lote -->
+                    <div class="row-items">
 
                         <div class="field-group">
                             <label class="label">Fórmula Infantil</label>
-                            <select id="medicamento" required>
-                                <option value="Selecione"></option><?php
+                            <select id="fi" required>
+                                <option value="Selecione"></option>
+                                <?php
                                 $stmt = $pdo->query("SELECT numeracao, nome, faixaEtaria FROM formulaInfantil ORDER BY faixaEtaria");
                                 while($formula = $stmt->fetch()) {
                                     echo "<option value='{$formula['numeracao']}'>{$formula['nome']}</option>";
@@ -159,7 +160,7 @@ verificarLogin();
                     </div>
                 
                     <div class="botoes">
-                        <button class="btn" id="consultar" onclick=""> <i class="fa-solid fa-magnifying-glass"></i> Consultar </button>
+                        <button class="btn" id="consultar" onclick="buscarEntradaTabela()"> <i class="fa-solid fa-magnifying-glass"></i> Consultar </button>
                     </div>
                     
                     <hr style="margin: 2vh 0 1vh 0; border: 1px solid #D23737;">
@@ -179,32 +180,11 @@ verificarLogin();
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="tipodata">Remanejamento</td>
-                                    <td class="lotedata">84J3</td>
-                                    <td class="datavalidadedata">31/03/2026</td>
-                                    <td class="dataentradadata">23/09/2025</td>
-                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
-                                </tr>
-                                <tr>
-                                    <td class="cpfdata">Maternidade</td>
-                                    <td class="namedata">90F1</td>
-                                    <td class="responsaveldata">09/09/2026</td>
-                                    <td class="nascimentodata">16/04/2025</td>
-                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
-                                </tr>
-                                <tr>
-                                    <td class="cpfdata">&nbsp;</td>
-                                    <td class="namedata">&nbsp;</td>
-                                    <td class="responsaveldata">&nbsp;</td>
-                                    <td class="nascimentodata">&nbsp;</td>
-                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
-                                </tr>
-                                <tr>
-                                    <td class="cpfdata">&nbsp;</td>
-                                    <td class="namedata">&nbsp;</td>
-                                    <td class="responsaveldata">&nbsp;</td>
-                                    <td class="nascimentodata">&nbsp;</td>
-                                    <td class="acao"><button class="btn" id="visualizar" onclick="">Ver mais</button></td>
+                                    <td class="tipodata"></td>
+                                    <td class="lotedata"></td>
+                                    <td class="datavalidadedata"></td>
+                                    <td class="dataentradadata"></td>
+                                    <td class="acao"><button class="btn" id="visualizar" onclick=""></button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -213,6 +193,68 @@ verificarLogin();
             </div>
 
         </div>
+        TODO: MOSTRAR RESULTADOS<br>
+        TODO: MOSTRAR A NUMERACAO DA FORMULA INFANTIL NA TABELA TAMBEM
     </main>
+
+    <script src="../js/carregarLotes.js"></script>
+    <script src="../js/buscarEntrada.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fi = document.getElementById('fi');
+            const validade = document.getElementById('validade');
+            const lote = document.getElementById('lote');
+            const tbody = document.querySelector('.tabelaResultado tbody');
+            const btnConsultar = document.querySelector('#consultar');
+            
+            // CARREGAR LOTES AO SELECIONAR FÓRMULA
+            if (fi && validade && lote) {
+                fi.addEventListener('change', function() {
+                    carregarLotesPorFormula(this.value, validade, lote);
+                    
+                    // SE SELECIONOU FÓRMULA, BUSCAR ENTRADAS
+                    if (this.value && tbody) {
+                        buscarEntradaTabela(this.value, '', '', tbody);
+                    }
+                });
+                
+                validade.addEventListener('change', function() {
+                    carregarLotesPorValidade(this.value, lote);
+                    
+                    // BUSCAR COM FILTRO DE VALIDADE
+                    const formulaValue = fi.value;
+                    if (formulaValue && this.value && tbody) {
+                        buscarEntradaTabela(formulaValue, this.value, '', tbody);
+                    }
+                });
+                
+                lote.addEventListener('change', function() {
+                    // BUSCAR COM FILTRO DE LOTE
+                    const formulaValue = fi.value;
+                    const validadeValue = validade.value;
+                    if (formulaValue && this.value && tbody) {
+                        buscarEntradaTabela(formulaValue, validadeValue, this.value, tbody);
+                    }
+                });
+            }
+            
+            // BOTÃO CONSULTAR (BUSCAR COM TODOS OS FILTROS)
+            if (btnConsultar && tbody) {
+                btnConsultar.onclick = function() {
+                    const formulaValue = fi ? fi.value : '';
+                    const validadeValue = validade ? validade.value : '';
+                    const loteValue = lote ? lote.value : '';
+                    
+                    if (!formulaValue) {
+                        alert('Selecione pelo menos a fórmula infantil');
+                        return;
+                    }
+                    
+                    buscarEntradaTabela(formulaValue, validadeValue, loteValue, tbody);
+                };
+            }
+        });
+    </script>
+
 </body>
 </html>
