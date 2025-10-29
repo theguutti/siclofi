@@ -188,6 +188,90 @@ elseif ($acao === 'select') {
     exit;
 }
 
+// BUSCAR ENTRADAS (PARA entradaChng.php)
+elseif ($acao === 'selectEntrada') {
+    session_start();
+    
+    if (!isset($_SESSION['usuario_udm'])) {
+        echo json_encode(["status" => "erro", "mensagem" => "Não autorizado."]);
+        exit;
+    }
+    
+    $formulaNumeracao = trim($_POST['formulaNumeracao'] ?? '');
+    $dataValidade = trim($_POST['dataValidade'] ?? '');
+    $lote_id = trim($_POST['lote_id'] ?? '');
+    $udm = $_SESSION['usuario_udm'];
+    
+    // CONSTRUIR QUERY DINAMICAMENTE
+    $where = ["e.udm = ?"];
+    $params = [$udm];
+    $types = "i";
+    
+    if ($formulaNumeracao !== '') {
+        $where[] = "l.formulaInfantilNumeracao = ?";
+        $params[] = $formulaNumeracao;
+        $types .= "i";
+    }
+    
+    if ($dataValidade !== '') {
+        $where[] = "l.dataValidade = ?";
+        $params[] = $dataValidade;
+        $types .= "s";
+    }
+    
+    if ($lote_id !== '') {
+        $where[] = "l.id = ?";
+        $params[] = $lote_id;
+        $types .= "i";
+    }
+    
+    $sql = "SELECT 
+                l.id as lote_id,
+                DATE_FORMAT(l.dataValidade, '%d/%m/%Y') as dataValidade_fmt,
+                'Entrada' as tipo,
+                DATE_FORMAT(NOW(), '%d/%m/%Y') as dataEntrada_fmt
+            FROM lote l
+            INNER JOIN estoque_lote el ON el.lote_id = l.id
+            INNER JOIN estoque e ON e.id = el.estoque_id
+            WHERE " . implode(' AND ', $where) . "
+            ORDER BY l.dataValidade DESC
+            LIMIT 50";
+    $stmt = $mysqli->prepare($sql);
+    if (!$stmt) {
+        echo json_encode(["status" => "erro", "mensagem" => "Erro no prepare: " . $mysqli->error]);
+        exit;
+    }
+    
+    // BIND PARAMS DINAMICAMENTE
+    if (count($params) > 0) {
+        $bind_names = [$types];
+        for ($i = 0; $i < count($params); $i++) {
+            $bind_name = 'bind' . $i;
+            $$bind_name = $params[$i];
+            $bind_names[] = &$$bind_name;
+        }
+        call_user_func_array([$stmt, 'bind_param'], $bind_names);
+    }
+    
+    $stmt->execute();
+    $res = $stmt->get_result();
+    
+    $dados = [];
+    while ($row = $res->fetch_assoc()) {
+        $dados[] = $row;
+    }
+    
+    if (count($dados) === 0) {
+        echo json_encode(["status" => "vazio", "mensagem" => "Nenhuma entrada encontrada."]);
+    } else {
+        echo json_encode(["status" => "sucesso", "dados" => $dados]);
+    }
+    
+    $stmt->close();
+    $mysqli->close();
+    exit;
+}
+
 else {
     echo json_encode(["status" => "erro", "mensagem" => "Ação inválida."]);
     $mysqli->close();
