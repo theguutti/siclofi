@@ -139,7 +139,13 @@ verificarLogin();
                             <label class="label">Justificativa</label>
                             <select id="justificativa-new">
                                 <option value="Selecione"></option>
-                                <option value=""></option>
+                                <option value="FurtoRoubo">Furto/Roubo</option>
+                                <option value="Quebra">Quebra</option>
+                                <option value="Validade">Validade</option>
+                                <option value="EstocagemInad">Estocagem inadequada</option>
+                                <option value="Avaria">Avaria</option>
+                                <option value="DesvioQlde">Desvio de Qualidade</option>
+                                <option value="Outros">Outros</option>
                             </select>
                         </div>
 
@@ -281,6 +287,7 @@ verificarLogin();
                                     <td class="dataentradadata"></td>
                                     <td class="acao"><button class="btn" id="visualizar" onclick=""></button></td>
                                 </tr>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -290,6 +297,11 @@ verificarLogin();
             </div>
 
         </div>
+        TODO: MOSTRAR RESULTADOS<br>
+        TODO: MOSTRAR SAIDAS APENAS DO TIPO PERDA <br>
+        TODO: SO PODE SELECIONAR UDMs DA MESMA UF<br>
+        TODO: DATA NAO PODE SER INFERIOR A DATA ATUAL<br>
+        TODO: MOSTRAR A NUMERACAO DA FORMULA INFANTIL NA TABELA TAMBEM
     </main>
 
     <script src="../js/forms.js"></script>
@@ -332,4 +344,3 @@ verificarLogin();
     
 </body>
 </html>
-
