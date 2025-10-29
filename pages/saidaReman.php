@@ -328,6 +328,11 @@ try {
             </div>
 
         </div>
+        TODO: MOSTRAR RESULTADOS<br>
+        TODO: MOSTRAR SAIDAS APENAS DO TIPO REMANEJAMENTO<br>
+        TODO: SO PODE SELECIONAR UDMs DA MESMA UF<br>
+        TODO: DATA NAO PODE SER INFERIOR A DATA ATUAL<br>
+        TODO: MOSTRAR A NUMERACAO DA FORMULA INFANTIL NA TABELA TAMBEM
     </main>
 
     <script src="../js/forms.js"></script>
@@ -370,4 +375,3 @@ try {
 
 </body>
 </html>
-
