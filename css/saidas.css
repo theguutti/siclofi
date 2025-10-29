@@ -62,7 +62,7 @@
 
 select{
     height: 30px;
-    padding: 14px 40px 14px 15px;
+    padding: 6px 40px 6px 12px;
     border: none;
     border-radius: 5px;
     outline: none;
@@ -173,28 +173,29 @@ select{
     padding-top: 0.5vh;
 }
 
-.cpfdata{
+.tipodata{
     width: 15vh;
 	text-align:left;
 }
 
-.namedata{
-    width: 53.28vh;
-	text-align:left;
-}
-
-.responsaveldata{
-    width: 53.28vh;
-	text-align:left;
-}
-
-.nascimentodata{
+.lotedata{
     width: 11vh;
+	text-align:left;
+}
+
+.datavalidadedata{
+    width: 53.28vh;
+	text-align:center;
+}
+
+.dataentradadata{
+    width: 53.28vh;
     text-align:center;
 }
 
 .acao{
     width: 23vh;
+    text-align:center;
 }
 
 #visualizar{
