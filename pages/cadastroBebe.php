@@ -254,11 +254,9 @@ verificarLogin();
                 <button onclick="closeModal()">OK</button>
             </div>
         </div>
-
-       
-</div>
-
-    </main>
+        TODO: MOSTRAR RESULTADOS APENAS DE BEBÊS COM STATUS DE ATIVO<br>
+        TODO: AO CLICAR EM VER MAIS, VER INFORMAÇÕES COMPLETAS DO BEBÊ E PODER MUDAR STATUS (ATIVO PARA INATIVO_OBITO OU INATIVO, E CASO SEJA INATIVO_OBITO, PREENCHER A DATA DE OBITO)
+</main>
 
     <script src="../js/cpf.js"></script>
     <script src="../js/tel.js"></script>
@@ -302,7 +300,7 @@ verificarLogin();
                     clearTimeout(timerCPF);
                     const valorCPF = this.value.trim();
                     
-                    if (valorCPF.length === 14) {
+                    if (valorCPF.length === 14) { // CPF COMPLETO (XXX.XXX.XXX-XX)
                         timerCPF = setTimeout(() => {
                             buscarBebeTabela('', valorCPF, tbody);
                         }, 500);
