@@ -1,10 +1,15 @@
+<?php
+session_start();
+require_once '../functions/auth.php';
+verificarLogin();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial</title>
-    <link rel="stylesheet" href="css/styleInicial.css">
+    <title>SICLOFI</title>
+    <link rel="stylesheet" href="../css/styleInicial.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
@@ -15,13 +20,6 @@
                 <a href="inicial.php"><p class="title">SICLOFI Operacional</p></a>
             </div>
             <ul id="side_items">
-                <li class="side-item">
-                    <a href="configuracoes.php">
-                        <i class="fa-solid fa-gear"></i>
-                        <span class="item-description">Configurações</span>
-                    </a>
-                </li>
-
                 <li class="side-item">
                     <a href="cadastroBebe.php">
                         <i class="fa-solid fa-user-plus"></i>
@@ -86,13 +84,6 @@
                 </li>
 
                 <li class="side-item">
-                    <a href="formulaInfantil.php">
-                        <i class="fa-solid fa-folder"></i>
-                        <span class="item-description">Fórmula Infantil</span>
-                    </a>
-                </li>
-
-                <li class="side-item">
                     <a href="gerenRelat.php">
                         <i class="fa-solid fa-book"></i>
                         <span class="item-description">Gerenciador de relatórios</span>
@@ -100,7 +91,7 @@
                 </li>
             </ul>
         </div>
-        <form action="logout.php" method="post">
+        <form action="../logout.php" method="post">
             <div id="logout">
                 <button type="submit" id="logoutBtn">
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -114,8 +105,4 @@
         <h1>Aqui vai aparecer se tiver fórmula perto do vencimento</h1>
     </main>
 </body>
-
 </html>
-
-<?php
-?>
