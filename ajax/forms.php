@@ -1,4 +1,14 @@
 <?php
+
+// TESTE DIRETO
+if (!isset($_POST['acao'])) {
+    $_POST['acao'] = 'selectEntrada';
+    $_POST['formulaNumeracao'] = '1';
+    $_POST['dataValidade'] = '';
+    $_POST['lote_id'] = '';
+    $_SESSION['usuario_udm'] = 2; // sua UDM
+}
+
 ob_start();
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 header('Content-Type: application/json; charset=utf-8');
@@ -157,13 +167,57 @@ elseif ($acao === 'select') {
     if ($cpf !== '') {
         $sql = "SELECT cpf, nomeCompleto, nomeSocial, DATE_FORMAT(dataNascimento,'%Y-%m-%d') as dataNascimento,
                        cartaoSUS, responsavel, telefoneResponsavel, enderecoResponsavel, dataCadastro, statusCadastro
-                FROM bebeHIV WHERE cpf = ? ORDER BY dataCadastro DESC";
+                FROM bebeHIV WHERE cpf = ? AND statusCadastro = 'ativo' ORDER BY dataCadastro DESC";
         $stmt = $mysqli->prepare($sql);
         $stmt->bind_param("s", $cpf);
     } else {
         $sql = "SELECT cpf, nomeCompleto, nomeSocial, DATE_FORMAT(dataNascimento,'%Y-%m-%d') as dataNascimento,
                        cartaoSUS, responsavel, telefoneResponsavel, enderecoResponsavel, dataCadastro, statusCadastro
-                FROM bebeHIV WHERE nomeCompleto LIKE ? ORDER BY dataCadastro DESC";
+                FROM bebeHIV WHERE nomeCompleto LIKE ? AND statusCadastro = 'ativo' ORDER BY dataCadastro DESC";
+        $stmt = $mysqli->prepare($sql);
+        $like = "%{$nome}%";
+        $stmt->bind_param("s", $like);
+    }
+
+    $stmt->execute();
+    $res = $stmt->get_result();
+
+    $dados = [];
+    while ($row = $res->fetch_assoc()) {
+        $dados[] = $row;
+    }
+
+    if (count($dados) === 0) {
+        echo json_encode(["status" => "vazio", "mensagem" => "Nenhum registro encontrado."]);
+    } else {
+        echo json_encode(["status" => "sucesso", "dados" => $dados]);
+    }
+
+    $stmt->close();
+    $mysqli->close();
+    exit;
+}
+
+// SELECT OBITO
+elseif ($acao === 'selectObito') {
+    $nome = trim($_POST['nome'] ?? '');
+    $cpf = trim($_POST['cpf'] ?? '');
+
+    if ($cpf === '' && $nome === '') {
+        echo json_encode(["status" => "erro", "mensagem" => "Informe nome ou CPF para consulta."]);
+        exit;
+    }
+
+    if ($cpf !== '') {
+        $sql = "SELECT cpf, nomeCompleto, nomeSocial, DATE_FORMAT(dataNascimento,'%Y-%m-%d') as dataNascimento,
+                       cartaoSUS, responsavel, telefoneResponsavel, enderecoResponsavel, dataCadastro, statusCadastro
+                FROM bebeHIV WHERE cpf = ? AND statusCadastro = 'inativo_obito' ORDER BY dataCadastro DESC";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("s", $cpf);
+    } else {
+        $sql = "SELECT cpf, nomeCompleto, nomeSocial, DATE_FORMAT(dataNascimento,'%Y-%m-%d') as dataNascimento,
+                       cartaoSUS, responsavel, telefoneResponsavel, enderecoResponsavel, dataCadastro, statusCadastro
+                FROM bebeHIV WHERE nomeCompleto LIKE ? AND statusCadastro = 'inativo_obito' ORDER BY dataCadastro DESC";
         $stmt = $mysqli->prepare($sql);
         $like = "%{$nome}%";
         $stmt->bind_param("s", $like);
@@ -202,58 +256,80 @@ elseif ($acao === 'selectEntrada') {
     $lote_id = trim($_POST['lote_id'] ?? '');
     $udm = $_SESSION['usuario_udm'];
     
-    // CONSTRUIR QUERY DINAMICAMENTE
-    $where = ["e.udm = ?"];
-    $params = [$udm];
-    $types = "i";
+    // CONSTRUIR WHERE DINAMICAMENTE
+    $where = [];
+    $params = [];
+    $types = "";
     
-    if ($formulaNumeracao !== '') {
+    // FILTRAR POR FÓRMULA
+    if (!empty($formulaNumeracao) && $formulaNumeracao !== 'Selecione') {
         $where[] = "l.formulaInfantilNumeracao = ?";
-        $params[] = $formulaNumeracao;
+        $params[] = intval($formulaNumeracao);
         $types .= "i";
     }
     
-    if ($dataValidade !== '') {
+    // FILTRAR POR VALIDADE
+    if (!empty($dataValidade) && $dataValidade !== 'Selecione') {
         $where[] = "l.dataValidade = ?";
         $params[] = $dataValidade;
         $types .= "s";
     }
     
-    if ($lote_id !== '') {
+    // FILTRAR POR LOTE
+    if (!empty($lote_id) && $lote_id !== 'Selecione') {
         $where[] = "l.id = ?";
-        $params[] = $lote_id;
+        $params[] = intval($lote_id);
         $types .= "i";
     }
     
+    // FILTRAR POR UDM (sempre)
+    $where[] = "e.udm = ?";
+    $params[] = $udm;
+    $types .= "i";
+    
+    // MONTAR SQL
+    $whereClause = count($where) > 0 ? "WHERE " . implode(' AND ', $where) : "";
+    
     $sql = "SELECT 
                 l.id as lote_id,
+                l.formulaInfantilNumeracao as formulaNumeracao,
                 DATE_FORMAT(l.dataValidade, '%d/%m/%Y') as dataValidade_fmt,
-                'Entrada' as tipo,
-                DATE_FORMAT(NOW(), '%d/%m/%Y') as dataEntrada_fmt
+                DATE_FORMAT(l.dataEntrada, '%d/%m/%Y') as dataEntrada_fmt,
+                'Entrada' as tipo, # TODO: TIPO É DADO PELO SELECT TIPOENTRADA
+                l.quantidade,
+                e.udm
             FROM lote l
             INNER JOIN estoque_lote el ON el.lote_id = l.id
             INNER JOIN estoque e ON e.id = el.estoque_id
-            WHERE " . implode(' AND ', $where) . "
-            ORDER BY l.dataValidade DESC
+            {$whereClause}
+            GROUP BY l.id
+            ORDER BY l.id DESC
             LIMIT 50";
+    
     $stmt = $mysqli->prepare($sql);
+    
     if (!$stmt) {
         echo json_encode(["status" => "erro", "mensagem" => "Erro no prepare: " . $mysqli->error]);
         exit;
     }
     
-    // BIND PARAMS DINAMICAMENTE
+    // BIND PARAMS
     if (count($params) > 0) {
-        $bind_names = [$types];
-        for ($i = 0; $i < count($params); $i++) {
-            $bind_name = 'bind' . $i;
-            $$bind_name = $params[$i];
-            $bind_names[] = &$$bind_name;
+        $refs = [];
+        $refs[] = $types;
+        
+        foreach ($params as $key => $value) {
+            $refs[] = &$params[$key];
         }
-        call_user_func_array([$stmt, 'bind_param'], $bind_names);
+        
+        call_user_func_array([$stmt, 'bind_param'], $refs);
     }
     
-    $stmt->execute();
+    if (!$stmt->execute()) {
+        echo json_encode(["status" => "erro", "mensagem" => "Erro ao executar: " . $stmt->error]);
+        exit;
+    }
+    
     $res = $stmt->get_result();
     
     $dados = [];
@@ -261,14 +337,137 @@ elseif ($acao === 'selectEntrada') {
         $dados[] = $row;
     }
     
+    $stmt->close();
+    
     if (count($dados) === 0) {
-        echo json_encode(["status" => "vazio", "mensagem" => "Nenhuma entrada encontrada."]);
+        echo json_encode([
+            "status" => "vazio", 
+            "mensagem" => "Nenhuma entrada encontrada para esta UDM."
+        ]);
     } else {
-        echo json_encode(["status" => "sucesso", "dados" => $dados]);
+        echo json_encode([
+            "status" => "sucesso", 
+            "dados" => $dados
+        ]);
     }
     
-    $stmt->close();
-    $mysqli->close();
+    exit;
+}
+
+// CADASTRAR ENTRADA LOTE
+elseif ($acao === 'insertEntrada') {
+    session_start();
+    
+    if (!isset($_SESSION['usuario_cpf']) || !isset($_SESSION['usuario_udm'])) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'Não autorizado']);
+        exit;
+    }
+    
+    // RECEBER DADOS
+    $tipoEntrada = mysqli_real_escape_string($mysqli, $_POST['tipoEntrada'] ?? '');
+    $dataEntrada = mysqli_real_escape_string($mysqli, $_POST['dataEntrada'] ?? '');
+    $origem = mysqli_real_escape_string($mysqli, $_POST['origem'] ?? '');
+    $formulaNumeracao = intval($_POST['formulaNumeracao'] ?? 0);
+    $dataValidade = mysqli_real_escape_string($mysqli, $_POST['dataValidade'] ?? '');
+    $numLote = mysqli_real_escape_string($mysqli, $_POST['numLote'] ?? '');
+    $quantidade = intval($_POST['quantidade'] ?? 0);
+    
+    // VALIDAR
+    if ($tipoEntrada === '' || $dataEntrada === '' || $origem === '' || 
+        $formulaNumeracao === 0 || $dataValidade === '' || $numLote === '' || $quantidade <= 0) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'Preencha todos os campos obrigatórios']);
+        exit;
+    }
+    
+    // INICIAR TRANSAÇÃO
+    $mysqli->begin_transaction();
+    
+    try {
+        // 1. INSERIR LOTE
+        $sql_lote = "INSERT INTO lote (
+            id,
+            dataValidade,
+            dataEntrada,
+            quantidade,
+            formulaInfantilNumeracao,
+            origemEntrada,
+            tipoEntrada
+        ) VALUES (
+            $numLote,
+            '$dataValidade', 
+            '$dataEntrada', 
+            $quantidade,
+            $formulaNumeracao,
+            '$origem',
+            '$tipoEntrada'
+        )";
+        
+        if (!$mysqli->query($sql_lote)) {
+            throw new Exception('Erro ao inserir lote: ' . $mysqli->error);
+        }
+        
+        $lote_id = $mysqli->insert_id;
+        
+        // 2. VERIFICAR/ATUALIZAR ESTOQUE
+        $udm = $_SESSION['usuario_udm'];
+        $sql_check = "SELECT id, saldoFinal FROM estoque WHERE udm = $udm";
+        $result = $mysqli->query($sql_check);
+        
+        if ($result->num_rows > 0) {
+            // ATUALIZAR ESTOQUE EXISTENTE
+            $estoque = $result->fetch_assoc();
+            $estoque_id = $estoque['id'];
+            $novo_saldo = $estoque['saldoFinal'] + $quantidade;
+            
+            $sql_update = "UPDATE estoque SET 
+                           saldoTotal = saldoTotal + $quantidade,
+                           saldoFinal = $novo_saldo
+                           WHERE id = $estoque_id";
+            
+            if (!$mysqli->query($sql_update)) {
+                throw new Exception('Erro ao atualizar estoque: ' . $mysqli->error);
+            }
+        } else {
+            // CRIAR ESTOQUE
+            $sql_estoque = "INSERT INTO estoque (udm, saldoAnterior, saldoTotal, saldoFinal)
+                            VALUES ($udm, 0, $quantidade, $quantidade)";
+            
+            if (!$mysqli->query($sql_estoque)) {
+                throw new Exception('Erro ao criar estoque: ' . $mysqli->error);
+            }
+            
+            $estoque_id = $mysqli->insert_id;
+        }
+        
+        // 3. VINCULAR LOTE AO ESTOQUE
+        $sql_vinculo = "INSERT INTO estoque_lote (estoque_id, lote_id, quantidade)
+                        VALUES ($estoque_id, $lote_id, $quantidade)";
+        
+        if (!$mysqli->query($sql_vinculo)) {
+            throw new Exception('Erro ao vincular lote ao estoque: ' . $mysqli->error);
+        }
+        
+        // 4. REGISTRAR LOG
+        $cpf = $_SESSION['usuario_cpf'];
+        $sql_log = "INSERT INTO log_auditoria (usuario_cpf, acao, tabela_afetada, registro_id, dados_novos)
+                    VALUES ('$cpf', 'INSERT', 'lote', $lote_id, 
+                    'Entrada: $tipoEntrada | Origem: $origem | Lote: $numLote | Qtd: $quantidade')";
+        
+        $mysqli->query($sql_log);
+        
+        $mysqli->commit();
+        
+        echo json_encode([
+            'status' => 'sucesso', 
+            'mensagem' => 'Entrada cadastrada com sucesso!',
+            'lote_id' => $lote_id
+        ]);
+        
+    } catch (Exception $e) {
+        $mysqli->rollback();
+        echo json_encode(['status' => 'erro', 'mensagem' => $e->getMessage()]);
+    }
+    
     exit;
 }
 
