@@ -8,7 +8,7 @@ verificarLogin();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial</title>
+    <title>SICLOFI</title>
     <link rel="stylesheet" href="../css/styleInicial.css">
     <link rel="stylesheet" href="../css/entradaNew.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -21,12 +21,6 @@ verificarLogin();
                 <a href="inicial.php"><p class="title">SICLOFI Operacional</p></a>
             </div>
             <ul id="side_items">
-                <li class="side-item">
-                    <a href="configuracoes.php">
-                        <i class="fa-solid fa-gear"></i>
-                        <span class="item-description">Configurações</span>
-                    </a>
-                </li>
 
                 <li class="side-item">
                     <a href="cadastroBebe.php">
@@ -88,13 +82,6 @@ verificarLogin();
                     <a href="saidaPerda.php">
                         <i class="fa-solid fa-xmark"></i>
                         <span class="item-description">Saída - Perda</span>
-                    </a>
-                </li>
-
-                <li class="side-item">
-                    <a href="formulaInfantil.php">
-                        <i class="fa-solid fa-folder"></i>
-                        <span class="item-description">Fórmula Infantil</span>
                     </a>
                 </li>
 
@@ -210,15 +197,152 @@ verificarLogin();
 
                     </div>
                     
-                    <button class="btn" id="adicionar" onclick=""><i class="fa-solid fa-plus"></i> Adicionar </button>
+                    <button class="btn" id="adicionar"><i class="fa-solid fa-plus"></i> Adicionar </button>
 
             </div>
-            TODO: AO SELECIONAR "Recebimento", SELECIONA "SES - RJ" AUTOMATICAMENTE
         </div>
 
     </main>
 
+    <script src="../js/forms.js"></script>
     <script src="../js/carregarLotes.js"></script>
+    <script>
+        // GARANTIR QUE O DOM ESTÁ CARREGADO
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('JavaScript carregado');
+            
+            const btnAdicionar = document.getElementById('adicionar');
+            const tipoEntrada = document.getElementById('tipoEntrada');
+            const origem = document.getElementById('origemEntrada');
+            
+            // AUTO-SELECIONAR "SES - RJ" QUANDO TIPO FOR "Recebimento"
+            if (tipoEntrada && origem) {
+                tipoEntrada.addEventListener('change', function() {
+                    if (this.value === 'Recebimento') {
+                        origem.value = 'SESrj';
+                        console.log('Origem auto-selecionada: SES - RJ');
+                    }
+                });
+            }
+            
+            // CONECTAR BOTÃO ADICIONAR
+            if (btnAdicionar) {
+                console.log('Botão "Adicionar" encontrado');
+                
+                btnAdicionar.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    console.log('Botão clicado!');
+                    
+                    try {
+                        // COLETAR DADOS
+                        const tipoEntrada = document.getElementById('tipoEntrada').value;
+                        const dataEntrada = document.getElementById('dataEntrada').value;
+                        const origem = document.getElementById('origemEntrada').value;
+                        const formulaNumeracao = document.getElementById('formulaNumeracao').value;
+                        const dataValidade = document.getElementById('dataValidade').value;
+                        const numLote = document.getElementById('numLote').value;
+                        const quantidade = document.getElementById('qtdeEntrada').value;
+                        
+                        console.log('Dados:', {
+                            tipoEntrada,
+                            dataEntrada,
+                            origem,
+                            formulaNumeracao,
+                            dataValidade,
+                            numLote,
+                            quantidade
+                        });
+                        
+                        // VALIDAR CAMPOS OBRIGATÓRIOS
+                        if (!tipoEntrada || tipoEntrada === 'Selecione') {
+                            alert('Selecione o tipo de entrada');
+                            return;
+                        }
+                        
+                        if (!dataEntrada) {
+                            alert('Informe a data de entrada');
+                            return;
+                        }
+                        
+                        if (!origem || origem === 'Selecione') {
+                            alert('Selecione a origem');
+                            return;
+                        }
+                        
+                        if (!formulaNumeracao || formulaNumeracao === 'Selecione') {
+                            alert('Selecione a fórmula infantil');
+                            return;
+                        }
+                        
+                        if (!dataValidade) {
+                            alert('Informe a data de validade');
+                            return;
+                        }
+                        
+                        if (!numLote || numLote.trim() === '') {
+                            alert('Informe o número do lote');
+                            return;
+                        }
+                        
+                        if (!quantidade || parseInt(quantidade) <= 0) {
+                            alert('Informe a quantidade (deve ser maior que zero)');
+                            return;
+                        }
+                        
+                        console.log('Validação OK');
+                        
+                        // PREPARAR DADOS
+                        const formData = new FormData();
+                        formData.append('acao', 'insertEntrada');
+                        formData.append('tipoEntrada', tipoEntrada);
+                        formData.append('dataEntrada', dataEntrada);
+                        formData.append('origem', origem);
+                        formData.append('formulaNumeracao', formulaNumeracao);
+                        formData.append('dataValidade', dataValidade);
+                        formData.append('numLote', numLote);
+                        formData.append('quantidade', quantidade);
+                        
+                        console.log('Enviando para servidor...');
+                        
+                        // ENVIAR PARA O SERVIDOR
+                        const resp = await fetch('../ajax/forms.php', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        
+                        console.log('Resposta recebida, status:', resp.status);
+                        
+                        const json = await resp.json();
+                        console.log('JSON:', json);
+                        
+                        if (json.status === 'sucesso') {
+                            alert('Entrada cadastrada com sucesso!');
+                            
+                            // LIMPAR FORMULÁRIO
+                            document.getElementById('tipoEntrada').value = 'Selecione';
+                            document.getElementById('dataEntrada').value = '';
+                            document.getElementById('origemEntrada').value = 'Selecione';
+                            document.getElementById('formulaNumeracao').value = 'Selecione';
+                            document.getElementById('dataValidade').value = '';
+                            document.getElementById('numLote').value = '';
+                            document.getElementById('qtdeEntrada').value = '';
+                            
+                            console.log('Formulário limpo');
+                        } else {
+                            alert('Erro: ' + (json.mensagem || 'Erro desconhecido'));
+                            console.error('Erro do servidor:', json);
+                        }
+                        
+                    } catch (err) {
+                        console.error('Erro ao cadastrar:', err);
+                        alert('Erro ao cadastrar entrada. Verifique o console (F12).');
+                    }
+                });
+            } else {
+                console.error('Botão "Adicionar" não encontrado!');
+            }
+        });
+    </script>
 
 </body>
 </html>
