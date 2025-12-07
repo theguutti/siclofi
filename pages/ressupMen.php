@@ -117,12 +117,12 @@ verificarLogin();
                     <div class="row-items">
 
                         <div class="field-group">
-                            <label>Fórmula Infantil 0-6 meses - Quantidade necessária</label>
+                            <label class="label">Fórmula Infantil 0-6 meses - Quantidade necessária</label>
                             <input type="text" name="qtdeInput" autocomplete="off" id="qtde" required></input>
                         </div>
 
                         <div class="field-group">
-                            <label>Fórmula Infantil 6-12 meses - Quantidade necessária</label>
+                            <label class="label">Fórmula Infantil 6-12 meses - Quantidade necessária</label>
                             <input type="text" name="qtdeInput" autocomplete="off" id="qtde" required></input>
                         </div>
 
@@ -145,6 +145,8 @@ verificarLogin();
             </div>
 
         </div>
+
     </main>
+    
 </body>
 </html>

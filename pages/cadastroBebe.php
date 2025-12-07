@@ -241,7 +241,7 @@ verificarLogin();
                 <button onclick="closeModal()">OK</button>
             </div>
         </div>
-        TODO: AO CLICAR EM VER MAIS, VER INFORMAÇÕES COMPLETAS DO BEBÊ E PODER MUDAR STATUS (ATIVO PARA INATIVO_OBITO OU INATIVO, E CASO SEJA INATIVO_OBITO, PREENCHER A DATA DE OBITO)
+        
 </main>
 
     <script src="../js/cpf.js"></script>

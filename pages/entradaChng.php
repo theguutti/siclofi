@@ -182,7 +182,7 @@ verificarLogin();
             </div>
 
         </div>
-        TODO: MOSTRAR RESULTADOS<br>
+
     </main>
 
     <script src="../js/carregarLotes.js"></script>

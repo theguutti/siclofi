@@ -135,7 +135,7 @@ try {
         <div class="container">
             
             <!-- FORM NEW -->
-            <div class="form-box active" id="new-saidaReman-form">
+            <div class="form-box active" id="new-saidaMaternidade-form">
 
                 <div class="titulo">
                     <label id="titulo">Saída - Maternidade</label>
@@ -228,7 +228,7 @@ try {
 
                     <div class="botoes">
                         <div class="row-buttons">
-                            <button class="btn" id="voltar" onclick="showForm('search-saidaReman-form')"> <i class="fa-solid fa-right-left"></i> Consultar </button>
+                            <button class="btn" id="voltar" onclick="showForm('search-saidaMaternidade-form')"> <i class="fa-solid fa-right-left"></i> Consultar </button>
                             <button class="btn" id="adicionar"> <i class="fa-solid fa-floppy-disk"></i> Adicionar </button>
                         </div>
                     </div>
@@ -237,7 +237,7 @@ try {
             </div>
 
             <!-- FORM CONSULTAR -->
-            <div class="form-box" id="search-saidaReman-form">
+            <div class="form-box" id="search-saidaMaternidade-form">
 
                 <div class="titulo">
                     <label id="titulo">Saída - Consultar Maternidade</label>
@@ -278,7 +278,7 @@ try {
                     
                     <div class="botoes">
                         <div class="row-buttons">
-                            <button class="btn" id="voltar" onclick="showForm('new-saidaReman-form')"> <i class="fa-solid fa-right-left"></i> Adicionar </button>
+                            <button class="btn" id="voltar" onclick="showForm('new-saidaMaternidade-form')"> <i class="fa-solid fa-right-left"></i> Adicionar </button>
                             <button class="btn" id="consultar" onclick=""> <i class="fa-solid fa-magnifying-glass"></i> Consultar </button>
                         </div>
                     </div>
@@ -315,11 +315,7 @@ try {
             </div>
 
         </div>
-        TODO: MOSTRAR RESULTADOS<br>
-        TODO: MOSTRAR SAIDAS APENAS DO TIPO MATERNIDADE<br>
-        TODO: SO PODE SELECIONAR UDMs DA MESMA UF<br>
-        TODO: DATA NAO PODE SER INFERIOR A DATA ATUAL<br>
-        TODO: MOSTRAR A NUMERACAO DA FORMULA INFANTIL NA TABELA TAMBEM
+
     </main>
 
     <script src="../js/forms.js"></script>
