@@ -1,3 +1,4 @@
+-- Criar banco de dados
 CREATE DATABASE IF NOT EXISTS siclofi;
 USE siclofi;
 
@@ -82,9 +83,12 @@ CREATE TABLE lote (
     id INT PRIMARY KEY,
     dataValidade DATE NOT NULL,
     dataEntrada DATE NOT NULL,
+    dataSaida DATE,
     quantidade INT NOT NULL,
     tipoEntrada VARCHAR(50) NOT NULL,
+    tipoSaida VARCHAR(50),
     origemEntrada VARCHAR(50) NOT NULL,
+    origemSaida VARCHAR(50),
     formulaInfantilNumeracao INT NOT NULL,
     FOREIGN KEY (formulaInfantilNumeracao) REFERENCES formulaInfantil(numeracao)
 );
