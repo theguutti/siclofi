@@ -26,6 +26,7 @@ botao para cancelar. 👍
 <?php
 ?>
 
+<!--
 <div class="form-box">
     <div class="titulo">
         <label id="titulo">Informações</label>
@@ -88,3 +89,4 @@ botao para cancelar. 👍
 
     </div>
 </div>
+-->
