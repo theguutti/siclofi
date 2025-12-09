@@ -23,6 +23,8 @@ campo para preencher data de obito,
 botao para salvar alteracoes e 👍
 botao para cancelar. 👍
 -->
+<?php
+?>
 
 <div class="form-box">
     <div class="titulo">
