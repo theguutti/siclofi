@@ -19,6 +19,7 @@ async function buscarEntradaTabela(formulaNumeracao, dataValidade, loteId, tbody
                 
                 tr.innerHTML = `
                     <td class="tipodata">${entrada.tipo || 'N/A'}</td>
+                    <td class="numdata">${entrada.formulaNumeracao || 'N/A'}</td>
                     <td class="lotedata">#${entrada.lote_id || ''}</td>
                     <td class="datavalidadedata">${entrada.dataValidade_fmt || ''}</td>
                     <td class="dataentradadata">${entrada.dataEntrada_fmt || ''}</td>

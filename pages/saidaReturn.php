@@ -328,6 +328,20 @@ verificarLogin();
             }
         });
     </script>
+    <script>
+        document.getElementById('consultar').addEventListener('click', function(e) {
+            e.preventDefault();
+            const tbody = document.querySelector('.tabelaResultado tbody');
+            const tipoSaida = 'Devolução';
+            buscarSaidaTabela(
+                tipoSaida,
+                document.getElementById('fi-search').value,
+                document.getElementById('validade-search').value,
+                document.getElementById('lote-search').value,
+                tbody
+            );
+        });
+    </script>
 
 </body>
 </html>

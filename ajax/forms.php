@@ -295,7 +295,7 @@ elseif ($acao === 'selectEntrada') {
                 l.formulaInfantilNumeracao as formulaNumeracao,
                 DATE_FORMAT(l.dataValidade, '%d/%m/%Y') as dataValidade_fmt,
                 DATE_FORMAT(l.dataEntrada, '%d/%m/%Y') as dataEntrada_fmt,
-                'Entrada' as tipo, # TODO: TIPO É DADO PELO SELECT TIPOENTRADA
+                'Entrada' as tipo,
                 l.quantidade,
                 e.udm
             FROM lote l
@@ -406,7 +406,7 @@ elseif ($acao === 'insertEntrada') {
             throw new Exception('Erro ao inserir lote: ' . $mysqli->error);
         }
         
-        $lote_id = $mysqli->insert_id;
+        $lote_id = $numLote;
         
         // 2. VERIFICAR/ATUALIZAR ESTOQUE
         $udm = $_SESSION['usuario_udm'];

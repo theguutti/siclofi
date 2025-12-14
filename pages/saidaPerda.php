@@ -338,7 +338,7 @@ verificarLogin();
             formData.append('origemSaida', 'Maternidade');
             formData.append('lote_id', document.getElementById('lote-new').value);
             formData.append('quantidade', document.getElementById('qtde-new').value);
-            formData.append('justificativaPerda', document.getElementById('desc-new').value); // Apenas para Perda
+            formData.append('justificativaPerda', document.getElementById('justificativa-new').value + ' - ' + document.getElementById('desc-new').value); // Apenas para Perda
             
             const resp = await fetch('../ajax/forms.php', { method: 'POST', body: formData });
             const json = await resp.json();
@@ -348,6 +348,20 @@ verificarLogin();
             } else {
                 alert('Erro: ' + json.mensagem);
             }
+        });
+    </script>
+    <script>
+        document.getElementById('consultar').addEventListener('click', function(e) {
+            e.preventDefault();
+            const tbody = document.querySelector('.tabelaResultado tbody');
+            const tipoSaida = 'Perda';
+            buscarSaidaTabela(
+                tipoSaida,
+                document.getElementById('fi-search').value,
+                document.getElementById('validade-search').value,
+                document.getElementById('lote-search').value,
+                tbody
+            );
         });
     </script>
     
