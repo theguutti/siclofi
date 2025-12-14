@@ -291,6 +291,7 @@ verificarLogin();
 
     <script src="../js/forms.js"></script>
     <script src="../js/carregarLotes.js"></script>
+    <script src="../js/buscarSaidas.js"></script>
     <script>
         // CONFIGURAR EVENTOS PARA O FORM NEW
         document.addEventListener('DOMContentLoaded', function() {

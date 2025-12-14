@@ -322,6 +322,7 @@ try {
 
     <script src="../js/forms.js"></script>
     <script src="../js/carregarLotes.js"></script>
+    <script src="../js/buscarSaidas.js"></script>
     <script>
         // CONFIGURAR EVENTOS PARA O FORM NEW
         document.addEventListener('DOMContentLoaded', function() {
@@ -364,7 +365,7 @@ try {
             const formData = new FormData();
             formData.append('acao', 'insertSaida');
             formData.append('tipoSaida', 'Remanejamento'); // Muda para cada página
-            formData.append('dataSaida', document.getElementById('data-new-perda').value);
+            formData.append('dataSaida', document.getElementById('data-new').value);
             formData.append('origemSaida', 'Remanejamento');
             formData.append('lote_id', document.getElementById('lote-new').value);
             formData.append('quantidade', document.getElementById('qtde-new').value);
