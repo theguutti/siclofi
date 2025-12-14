@@ -327,7 +327,8 @@ verificarLogin();
             }
         });
     </script>
-        <script>
+
+    <script>
         document.getElementById('adicionar').addEventListener('click', async function(e) {
             e.preventDefault();
             
@@ -335,7 +336,7 @@ verificarLogin();
             formData.append('acao', 'insertSaida');
             formData.append('tipoSaida', 'Perda'); // Muda para cada página
             formData.append('dataSaida', document.getElementById('data-new-perda').value);
-            formData.append('origemSaida', 'Maternidade');
+            formData.append('origemSaida', 'Perda');
             formData.append('lote_id', document.getElementById('lote-new').value);
             formData.append('quantidade', document.getElementById('qtde-new').value);
             formData.append('justificativaPerda', document.getElementById('justificativa-new').value + ' - ' + document.getElementById('desc-new').value); // Apenas para Perda
@@ -350,6 +351,7 @@ verificarLogin();
             }
         });
     </script>
+    
     <script>
         document.getElementById('consultar').addEventListener('click', function(e) {
             e.preventDefault();

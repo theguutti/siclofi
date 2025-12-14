@@ -373,7 +373,7 @@ try {
             formData.append('acao', 'insertSaida');
             formData.append('tipoSaida', 'Maternidade'); // Muda para cada página
             formData.append('dataSaida', document.getElementById('data-new').value);
-            formData.append('origemSaida', 'Perda');
+            formData.append('origemSaida', 'Maternidade');
             formData.append('lote_id', document.getElementById('lote-new').value);
             formData.append('quantidade', document.getElementById('qtde-new').value);
             
@@ -387,6 +387,7 @@ try {
             }
         });
     </script>
+    
     <script>
         document.getElementById('consultar').addEventListener('click', function(e) {
             e.preventDefault();

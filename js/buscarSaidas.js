@@ -26,7 +26,7 @@ async function buscarSaidaTabela(tipoSaida, formulaNumeracao, dataValidade, lote
                     <td class="dataentradadata">${saida.dataSaida_fmt || ''}</td>
                     ${saida.justificativaPerda ? `<td class="justificativadata">${saida.justificativaPerda}</td>` : ''}
                     <td class="acao">
-                        <button class="btn" id="visualizar" onclick="verMaisSaida(${saida.lote_id})">Ver mais</button>
+                        <button class="btn" id="visualizar" onclick="verMaisEntrada(${saida.lote_id})">Ver mais</button>
                     </td>
                 `;
                 
@@ -36,14 +36,14 @@ async function buscarSaidaTabela(tipoSaida, formulaNumeracao, dataValidade, lote
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td colspan="5" style="text-align: center; padding: 20px; color: #666;">
-                    Nenhuma entrada encontrada
+                    Nenhuma saída encontrada
                 </td>
             `;
             tbody.appendChild(tr);
         }
         
     } catch (err) {
-        console.error('Erro ao buscar entrada:', err);
+        console.error('Erro ao buscar saída:', err);
         tbody.innerHTML = `
             <tr>
                 <td colspan="5" style="text-align: center; padding: 20px; color: #D23737;">

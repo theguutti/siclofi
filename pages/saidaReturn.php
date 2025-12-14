@@ -306,7 +306,8 @@ verificarLogin();
             }
         });
     </script>
-        <script>
+
+    <script>
         document.getElementById('adicionar').addEventListener('click', async function(e) {
             e.preventDefault();
             
@@ -328,6 +329,7 @@ verificarLogin();
             }
         });
     </script>
+    
     <script>
         document.getElementById('consultar').addEventListener('click', function(e) {
             e.preventDefault();
