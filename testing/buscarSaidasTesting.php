@@ -1,5 +1,5 @@
 <?php
-elseif ($acao === 'selectSaida') {
+if ($acao === 'selectSaida') {
     session_start();
     
     if (!isset($_SESSION['usuario_udm'])) {

@@ -20,6 +20,7 @@ async function buscarSaidaTabela(tipoSaida, formulaNumeracao, dataValidade, lote
                 
                 tr.innerHTML = `
                     <td class="tipodata">${saida.tipoSaida || 'N/A'}</td>
+                    <td class="numdata">${saida.formulaNumeracao || 'N/A'}</td>
                     <td class="lotedata">#${saida.lote_id || ''}</td>
                     <td class="datavalidadedata">${saida.dataValidade_fmt || ''}</td>
                     <td class="dataentradadata">${saida.dataSaida_fmt || ''}</td>
@@ -54,5 +55,5 @@ async function buscarSaidaTabela(tipoSaida, formulaNumeracao, dataValidade, lote
 
 // FUNÃ‡ÃƒO PLACEHOLDER PARA VER MAIS
 function verMaisEntrada(loteId) {
-    alert('FunÃ§Ã£o "Ver Mais" serÃ¡ implementada em breve!\nLote ID: ' + loteId);
+    alert('Função "Ver Mais" será implementada em breve!\nLote ID: ' + loteId);
 }

@@ -1,6 +1,6 @@
 <?php
 // CADASTRAR SAÃDA LOTE - EM ANDAMENTO
-elseif ($acao === 'updateSaida') {
+if ($acao === 'insertSaida') {
     session_start();
     
     if (!isset($_SESSION['usuario_cpf']) || !isset($_SESSION['usuario_udm'])) {
