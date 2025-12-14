@@ -17,15 +17,16 @@ async function buscarSaidaTabela(tipoSaida, formulaNumeracao, dataValidade, lote
         if (json.status === 'sucesso' && json.dados.length > 0) {
             json.dados.forEach(saida => {
                 const tr = document.createElement('tr');
-                
+
                 tr.innerHTML = `
                     <td class="tipodata">${saida.tipoSaida || 'N/A'}</td>
                     <td class="numdata">${saida.formulaNumeracao || 'N/A'}</td>
                     <td class="lotedata">#${saida.lote_id || ''}</td>
                     <td class="datavalidadedata">${saida.dataValidade_fmt || ''}</td>
                     <td class="dataentradadata">${saida.dataSaida_fmt || ''}</td>
+                    ${saida.justificativaPerda ? `<td class="justificativadata">${saida.justificativaPerda}</td>` : ''}
                     <td class="acao">
-                        <button class="btn" id="visualizar" onclick="verMaisEntrada(${saida.lote_id})">Ver mais</button>
+                        <button class="btn" id="visualizar" onclick="verMaisSaida(${saida.lote_id})">Ver mais</button>
                     </td>
                 `;
                 

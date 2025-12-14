@@ -17,12 +17,12 @@ if ($acao === 'selectSaida') {
     $where = [];
     $params = [];
     $types = "";
-    
-    // FILTRAR POR SAÃDA
+
+    // FILTRAR POR TIPO SAÍDA
     if (!empty($tipoSaida) && $tipoSaida !== 'Selecione') {
         $where[] = "l.tipoSaida = ?";
-        $params[] = intval($tipoSaida);
-        $types .= "i";
+        $params[] = $tipoSaida;
+        $types .= "s";
     }
     
     // FILTRAR POR FÃ“RMULA
@@ -53,19 +53,20 @@ if ($acao === 'selectSaida') {
     
     // MONTAR SQL
     $whereClause = count($where) > 0 ? "WHERE " . implode(' AND ', $where) : "";
-    
+
     $sql = "SELECT 
                 l.id as lote_id,
                 l.tipoSaida as tipoSaida,
-                l.formulaNumeracao as formulaNumeracao,
+                l.formulaInfantilNumeracao as formulaNumeracao,
                 DATE_FORMAT(l.dataValidade, '%d/%m/%Y') as dataValidade_fmt,
                 DATE_FORMAT(l.dataSaida, '%d/%m/%Y') as dataSaida_fmt,
+                l.justificativaPerda,
                 l.quantidade,
                 e.udm
             FROM lote l
             INNER JOIN estoque_lote el ON el.lote_id = l.id
             INNER JOIN estoque e ON e.id = el.estoque_id
-            WHERE tipoSaida = ?
+            {$whereClause}
             GROUP BY l.id
             ORDER BY l.id DESC
             LIMIT 50";

@@ -364,5 +364,29 @@ try {
         });
     </script>
 
+    <script>
+        document.getElementById('adicionar').addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('acao', 'insertSaida');
+            formData.append('tipoSaida', 'Maternidade'); // Muda para cada página
+            formData.append('dataSaida', document.getElementById('data-new-perda').value);
+            formData.append('origemSaida', 'Perda');
+            formData.append('lote_id', document.getElementById('lote-new').value);
+            formData.append('quantidade', document.getElementById('qtde-new').value);
+            
+            const resp = await fetch('../ajax/forms.php', { method: 'POST', body: formData });
+            const json = await resp.json();
+            
+            if (json.status === 'sucesso') {
+                alert(json.mensagem);
+            } else {
+                alert('Erro: ' + json.mensagem);
+            }
+        });
+    </script>
+
+
 </body>
 </html>
