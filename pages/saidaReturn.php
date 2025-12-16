@@ -306,7 +306,7 @@ verificarLogin();
             }
         });
     </script>
-
+    
     <script>
         document.getElementById('adicionar').addEventListener('click', async function(e) {
             e.preventDefault();

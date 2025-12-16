@@ -242,6 +242,68 @@ verificarLogin();
             </div>
         </div>
         
+        <div class="modal-overlay-info" id="modalBebeInfo">
+            <div class="modal-info">
+                <h2>Informações do Bebê</h2>
+                
+                <div class="row-items">
+                    <div class="field-group">
+                        <label>Nome Completo</label>
+                        <input type="text" id="modal-nome" disabled>
+                    </div>
+                    <div class="field-group">
+                        <label>Nome Social</label>
+                        <input type="text" id="modal-nomeSocial" disabled>
+                    </div>
+                </div>
+                
+                <div class="row-items">
+                    <div class="field-group">
+                        <label>CPF</label>
+                        <input type="text" id="modal-cpf" disabled>
+                    </div>
+                    <div class="field-group">
+                        <label>Cartão SUS</label>
+                        <input type="text" id="modal-cartaoSUS" disabled>
+                    </div>
+                </div>
+                
+                <div class="row-items">
+                    <div class="field-group">
+                        <label>Data de Nascimento</label>
+                        <input type="date" id="modal-dataNascimento" disabled>
+                    </div>
+                    <div class="field-group">
+                        <label>Data de Óbito</label>
+                        <input type="date" id="modal-dataObito">
+                    </div>
+                </div>
+                
+                <div class="row-items">
+                    <div class="field-group">
+                        <label>Responsável</label>
+                        <input type="text" id="modal-responsavel" disabled>
+                    </div>
+                </div>
+                
+                <div class="row-items">
+                    <div class="field-group">
+                        <label>Endereço</label>
+                        <input type="text" id="modal-endereco" disabled>
+                    </div>
+                    <div class="field-group">
+                        <label>Telefone</label>
+                        <input type="text" id="modal-telefone" disabled>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn" id="voltar" onclick="fecharModal()">Cancelar</button>
+                    <button class="btn" id="salvar" onclick="salvarObito()">Salvar</button>
+                </div>
+            </div>
+        </div>
+
 </main>
 
     <script src="../js/cpf.js"></script>

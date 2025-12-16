@@ -121,6 +121,73 @@ async function buscarBebeObitoTabela(nome, cpf, tbody) {
 }
 
 // FUNÇÃO PLACEHOLDER PARA VER MAIS
-function verMaisBebe(cpf) {
-    alert('Função "Ver Mais" será implementada em breve!\nCPF: ' + cpf);
+async function verMaisBebe(cpf) {
+    try {
+        const resp = await fetch(`../ajax/buscar_bebe_detalhes.php?cpf=${encodeURIComponent(cpf)}`);
+        const json = await resp.json();
+        
+        if (json.status === 'sucesso') {
+            const bebe = json.dados;
+            
+            // Preencher modal
+            document.getElementById('modal-nome').value = bebe.nomeCompleto || '';
+            document.getElementById('modal-nomeSocial').value = bebe.nomeSocial || '';
+            document.getElementById('modal-cpf').value = bebe.cpf || '';
+            document.getElementById('modal-cartaoSUS').value = bebe.cartaoSUS || '';
+            document.getElementById('modal-dataNascimento').value = bebe.dataNascimento || '';
+            document.getElementById('modal-responsavel').value = bebe.responsavel || '';
+            document.getElementById('modal-endereco').value = bebe.enderecoResponsavel || '';
+            document.getElementById('modal-telefone').value = bebe.telefoneResponsavel || '';
+            document.getElementById('modal-dataObito').value = bebe.dataObito || '';
+            
+            // Abrir modal
+            document.getElementById('modalBebeInfo').classList.add('active');
+        } else {
+            alert('Erro: ' + json.mensagem);
+        }
+    } catch (err) {
+        console.error('Erro ao buscar detalhes:', err);
+        alert('Erro ao buscar informações do bebê');
+    }
+}
+
+function fecharModal() {
+    document.getElementById('modalBebeInfo').classList.remove('active');
+}
+
+async function salvarObito() {
+    const cpf = document.getElementById('modal-cpf').value;
+    const dataObito = document.getElementById('modal-dataObito').value;
+    
+    if (!dataObito) {
+        alert('Preencha a data de óbito para salvar');
+        return;
+    }
+    
+    try {
+        const formData = new FormData();
+        formData.append('cpf', cpf);
+        formData.append('dataObito', dataObito);
+        
+        const resp = await fetch('../ajax/registrar_obito.php', {
+            method: 'POST',
+            body: formData
+        });
+        const json = await resp.json();
+        
+        if (json.status === 'sucesso') {
+            alert(json.mensagem);
+            fecharModal();
+            // Recarregar tabela
+            const tbody = document.querySelector('.tabelaResultado tbody');
+            if (tbody) {
+                tbody.innerHTML = '';
+            }
+        } else {
+            alert('Erro: ' + json.mensagem);
+        }
+    } catch (err) {
+        console.error('Erro ao salvar:', err);
+        alert('Erro ao registrar óbito');
+    }
 }
