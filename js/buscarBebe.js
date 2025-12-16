@@ -126,6 +126,7 @@ let bebeAtualCPF = '';
 async function verMaisBebe(cpf) {
     try {
         bebeAtualCPF = cpf;
+        console.log('CPF armazenado:', bebeAtualCPF);
         
         const resp = await fetch(`../ajax/buscar_bebe_detalhes.php?cpf=${encodeURIComponent(cpf)}`);
         const json = await resp.json();
@@ -201,8 +202,14 @@ async function salvarDispensacao() {
     }
     
     try {
+        console.log('CPF usado na dispensação:', bebeAtualCPF);
+        if (!bebeAtualCPF) {
+            alert('Erro: CPF do bebê não identificado');
+            return;
+        }
         const formData = new FormData();
-        formData.append('cpf', bebeAtualCPF);
+        const cpfLimpo = bebeAtualCPF.replace(/\D/g, '');
+        formData.append('cpf', cpfLimpo);
         formData.append('lote_id', lote_id);
         formData.append('quantidade', quantidade);
         formData.append('proximaConsulta', proximaConsulta);
@@ -211,7 +218,18 @@ async function salvarDispensacao() {
             method: 'POST',
             body: formData
         });
-        const json = await resp.json();
+
+        const texto = await resp.text();
+        console.log('Resposta bruta:', texto);
+
+        let json;
+        try {
+            json = JSON.parse(texto);
+        } catch(e) {
+            console.error('Erro ao parsear JSON:', e);
+            alert('Erro no servidor: ' + texto.substring(0, 200));
+            return;
+        }
         
         if (json.status === 'sucesso') {
             alert(json.mensagem);

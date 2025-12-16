@@ -1,4 +1,6 @@
 <?php
+error_reporting(0);
+ini_set('display_errors', 0);
 session_start();
 require_once '../config/conecta.php';
 
@@ -26,11 +28,36 @@ if (empty($cpf) || $lote_id === 0 || $quantidade <= 0) {
 
 try {
     $pdo->beginTransaction();
+
+    if ($proximaConsulta && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $proximaConsulta)) {
+        throw new Exception('Data inválida');
+    }
     
     // BUSCA NUMERACAO DE FI PARA BEBE
-    $stmt = $pdo->prepare("SELECT formulaInfantilNumeracao FROM bebeHIV WHERE cpf = ?");
+    $cpf = preg_replace('/[^0-9]/', '', $cpf);
+
+    // Verificar se CPF tem 11 dígitos
+    if (strlen($cpf) !== 11) {
+        throw new Exception("CPF inválido: deve ter 11 dígitos (recebido: " . strlen($cpf) . ")");
+    }
+    
+    $stmt = $pdo->prepare("
+        SELECT cpf, formulaInfantilNumeracao, statusCadastro 
+        FROM bebeHIV 
+        WHERE REPLACE(REPLACE(REPLACE(cpf, '.', ''), '-', ''), ' ', '') = ?
+    ");
     $stmt->execute([$cpf]);
     $bebe = $stmt->fetch();
+
+    if (!$bebe) {
+        throw new Exception('Bebê não encontrado no sistema');
+    }
+
+    if ($bebe['statusCadastro'] !== 'ativo') {
+        throw new Exception('Bebê não está com status ativo');
+    }
+
+    $cpf = $bebe['cpf'];
     
     if (!$bebe) {
         throw new Exception('Bebê não encontrado');
@@ -71,7 +98,7 @@ try {
     $stmt->execute([
         $cpf,
         $dataDispensacao,
-        $proximaConsulta,
+        $proximaConsulta ?: null,
         $farmaceutico,
         $estoque_id,
         $numeracaoFI,

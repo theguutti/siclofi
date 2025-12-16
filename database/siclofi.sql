@@ -379,3 +379,6 @@ JOIN udm u ON e.udm = u.codigo;
 
 COMMIT;
 
+SELECT cpf, LENGTH(cpf) as tamanho, CHAR_LENGTH(cpf) as chars 
+FROM bebeHIV 
+LIMIT 1;
