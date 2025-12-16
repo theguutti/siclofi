@@ -242,6 +242,7 @@ verificarLogin();
             </div>
         </div>
         
+        <!-- MODAL INFORMAÇÕES DO BEBÊ -->
         <div class="modal-overlay-info" id="modalBebeInfo">
             <div class="modal-info">
                 <h2>Informações do Bebê</h2>
@@ -274,8 +275,8 @@ verificarLogin();
                         <input type="date" id="modal-dataNascimento" disabled>
                     </div>
                     <div class="field-group">
-                        <label>Data de Óbito</label>
-                        <input type="date" id="modal-dataObito">
+                        <label>Fórmula Infantil</label>
+                        <input type="text" id="modal-formulaNumeracao" disabled>
                     </div>
                 </div>
                 
@@ -296,10 +297,78 @@ verificarLogin();
                         <input type="text" id="modal-telefone" disabled>
                     </div>
                 </div>
+
+                <hr style="margin: 20px 0; border: 1px solid #D23737;">
+                <h3 style="margin-bottom: 15px;">Última Dispensação</h3>
+                
+                <div class="row-items">
+                    <div class="field-group">
+                        <label>Data da Dispensação</label>
+                        <input type="text" id="modal-ultimaDispensacao" disabled>
+                    </div>
+                    <div class="field-group">
+                        <label>Quantidade Dispensada</label>
+                        <input type="text" id="modal-ultimaQuantidade" disabled>
+                    </div>
+                    <div class="field-group">
+                        <label>Próxima Consulta</label>
+                        <input type="text" id="modal-proximaConsulta" disabled>
+                    </div>
+                </div>
+
+                <hr style="margin: 20px 0; border: 1px solid #D23737;">
+                
+                <!-- FORMULÁRIO DE DISPENSAÇÃO (OCULTO) -->
+                <div id="formDispensacao" style="display: none;">
+                    <h3 style="margin-bottom: 15px;">Registrar Nova Dispensação</h3>
+                    
+                    <div class="row-items">
+                        <div class="field-group">
+                            <label>Validade</label>
+                            <select id="modal-validade-disp">
+                                <option value="Selecione"></option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label>Lote</label>
+                            <select id="modal-lote-disp">
+                                <option value="Selecione"></option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row-items">
+                        <div class="field-group">
+                            <label>Quantidade</label>
+                            <input type="number" id="modal-quantidade-disp">
+                        </div>
+                        <div class="field-group">
+                            <label>Próxima Consulta</label>
+                            <input type="date" id="modal-proximaConsulta-disp">
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button class="btn" id="adicionar" onclick="salvarDispensacao()">Salvar Dispensação</button>
+                    </div>
+                    
+                    <hr style="margin: 20px 0; border: 1px solid #D23737;">
+                </div>
+                
+                <!-- CAMPOS PARA REGISTRO DE ÓBITO (apenas em registroObito.php) -->
+                <div class="row-items">
+                    <div class="field-group">
+                        <label>Data de Óbito</label>
+                        <input type="date" id="modal-dataObito">
+                    </div>
+                </div>
                 
                 <div class="btn-group">
+                    <button class="btn" id="adicionar" onclick="mostrarFormDispensacao()">
+                        <i class="fa-solid fa-pills"></i> Registrar Dispensação
+                    </button>
                     <button class="btn" id="voltar" onclick="fecharModal()">Cancelar</button>
-                    <button class="btn" id="salvar" onclick="salvarObito()">Salvar</button>
+                    <button class="btn" id="salvar" onclick="salvarObito()">Salvar Óbito</button>
                 </div>
             </div>
         </div>
@@ -310,6 +379,8 @@ verificarLogin();
     <script src="../js/tel.js"></script>
     <script src="../js/forms.js"></script>
     <script src="../js/buscarBebe.js"></script>
+    <script src="../js/carregarLotes.js"></script>
+    <script src="../js/buscarSaidas.js"></script>
     <script>
         // EVENTO: BUSCAR AO DIGITAR (ATUALIZAÇÃO AUTOMÁTICA)
         document.addEventListener('DOMContentLoaded', function() {
@@ -364,6 +435,19 @@ verificarLogin();
                             </tr>
                         `;
                     }
+                });
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // EVENTO: SELECIONAR VALIDADE NO MODAL
+            const validadeDisp = document.getElementById('modal-validade-disp');
+            const loteDisp = document.getElementById('modal-lote-disp');
+            
+            if (validadeDisp && loteDisp) {
+                validadeDisp.addEventListener('change', function() {
+                    carregarLotesPorValidade(this.value, loteDisp);
                 });
             }
         });

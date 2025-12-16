@@ -43,7 +43,26 @@ try {
         exit;
     }
     
-    echo json_encode(['status' => 'sucesso', 'dados' => $bebe]);
+    // ÚLTIMA DISPENSAÇÃO
+    $stmt = $pdo->prepare("
+        SELECT 
+            DATE_FORMAT(dataDispensacao, '%d/%m/%Y') as dataDispensacao_fmt,
+            DATE_FORMAT(proximaDispensacao, '%d/%m/%Y') as proximaDispensacao_fmt,
+            quantidadeFI,
+            numeracaoFI
+        FROM consultaDispensacao
+        WHERE bebeCPF = ?
+        ORDER BY dataDispensacao DESC
+        LIMIT 1
+    ");
+    $stmt->execute([$cpf]);
+    $ultimaDispensacao = $stmt->fetch();
+    
+    echo json_encode([
+        'status' => 'sucesso', 
+        'dados' => $bebe,
+        'ultimaDispensacao' => $ultimaDispensacao ?: null
+    ]);
     
 } catch(PDOException $e) {
     echo json_encode(['status' => 'erro', 'mensagem' => 'Erro: ' . $e->getMessage()]);

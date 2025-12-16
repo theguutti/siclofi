@@ -121,15 +121,20 @@ async function buscarBebeObitoTabela(nome, cpf, tbody) {
 }
 
 // FUNÇÃO PLACEHOLDER PARA VER MAIS
+let bebeAtualCPF = '';
+
 async function verMaisBebe(cpf) {
     try {
+        bebeAtualCPF = cpf;
+        
         const resp = await fetch(`../ajax/buscar_bebe_detalhes.php?cpf=${encodeURIComponent(cpf)}`);
         const json = await resp.json();
         
         if (json.status === 'sucesso') {
             const bebe = json.dados;
+            const ultima = json.ultimaDispensacao;
             
-            // PREENCHER MODAL
+            // PREENCHE MODAL
             document.getElementById('modal-nome').value = bebe.nomeCompleto || '';
             document.getElementById('modal-nomeSocial').value = bebe.nomeSocial || '';
             document.getElementById('modal-cpf').value = bebe.cpf || '';
@@ -139,8 +144,20 @@ async function verMaisBebe(cpf) {
             document.getElementById('modal-endereco').value = bebe.enderecoResponsavel || '';
             document.getElementById('modal-telefone').value = bebe.telefoneResponsavel || '';
             document.getElementById('modal-dataObito').value = bebe.dataObito || '';
+            document.getElementById('modal-formulaNumeracao').value = bebe.formulaInfantilNumeracao || '';
             
-            // ABRIR MODAL
+            // PREENCHE ULTIMA DISPENSACAO
+            if (ultima) {
+                document.getElementById('modal-ultimaDispensacao').value = ultima.dataDispensacao_fmt || '';
+                document.getElementById('modal-ultimaQuantidade').value = ultima.quantidadeFI || '';
+                document.getElementById('modal-proximaConsulta').value = ultima.proximaDispensacao_fmt || '';
+            } else {
+                document.getElementById('modal-ultimaDispensacao').value = 'Nenhuma dispensação registrada';
+                document.getElementById('modal-ultimaQuantidade').value = '';
+                document.getElementById('modal-proximaConsulta').value = '';
+            }
+            
+            // Abrir modal
             document.getElementById('modalBebeInfo').classList.add('active');
         } else {
             alert('Erro: ' + json.mensagem);
@@ -153,6 +170,59 @@ async function verMaisBebe(cpf) {
 
 function fecharModal() {
     document.getElementById('modalBebeInfo').classList.remove('active');
+    document.getElementById('formDispensacao').style.display = 'none';
+}
+
+function mostrarFormDispensacao() {
+    document.getElementById('formDispensacao').style.display = 'block';
+    
+    // CARREGA LOTES
+    const formulaNumeracao = document.getElementById('modal-formulaNumeracao').value;
+    if (formulaNumeracao) {
+        const validade = document.getElementById('modal-validade-disp');
+        const lote = document.getElementById('modal-lote-disp');
+        carregarLotesPorFormula(formulaNumeracao, validade, lote);
+    }
+}
+
+async function salvarDispensacao() {
+    const lote_id = document.getElementById('modal-lote-disp').value;
+    const quantidade = document.getElementById('modal-quantidade-disp').value;
+    const proximaConsulta = document.getElementById('modal-proximaConsulta-disp').value;
+    
+    if (!lote_id || lote_id === 'Selecione') {
+        alert('Selecione o lote');
+        return;
+    }
+    
+    if (!quantidade || parseInt(quantidade) <= 0) {
+        alert('Informe a quantidade');
+        return;
+    }
+    
+    try {
+        const formData = new FormData();
+        formData.append('cpf', bebeAtualCPF);
+        formData.append('lote_id', lote_id);
+        formData.append('quantidade', quantidade);
+        formData.append('proximaConsulta', proximaConsulta);
+        
+        const resp = await fetch('../ajax/registrar_dispensacao.php', {
+            method: 'POST',
+            body: formData
+        });
+        const json = await resp.json();
+        
+        if (json.status === 'sucesso') {
+            alert(json.mensagem);
+            fecharModal();
+        } else {
+            alert('Erro: ' + json.mensagem);
+        }
+    } catch (err) {
+        console.error('Erro ao salvar:', err);
+        alert('Erro ao registrar dispensação');
+    }
 }
 
 async function salvarObito() {
@@ -178,7 +248,6 @@ async function salvarObito() {
         if (json.status === 'sucesso') {
             alert(json.mensagem);
             fecharModal();
-            // RECARREGAR TABELA
             const tbody = document.querySelector('.tabelaResultado tbody');
             if (tbody) {
                 tbody.innerHTML = '';
