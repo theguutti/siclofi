@@ -129,7 +129,7 @@ async function verMaisBebe(cpf) {
         if (json.status === 'sucesso') {
             const bebe = json.dados;
             
-            // Preencher modal
+            // PREENCHER MODAL
             document.getElementById('modal-nome').value = bebe.nomeCompleto || '';
             document.getElementById('modal-nomeSocial').value = bebe.nomeSocial || '';
             document.getElementById('modal-cpf').value = bebe.cpf || '';
@@ -140,7 +140,7 @@ async function verMaisBebe(cpf) {
             document.getElementById('modal-telefone').value = bebe.telefoneResponsavel || '';
             document.getElementById('modal-dataObito').value = bebe.dataObito || '';
             
-            // Abrir modal
+            // ABRIR MODAL
             document.getElementById('modalBebeInfo').classList.add('active');
         } else {
             alert('Erro: ' + json.mensagem);
@@ -178,7 +178,7 @@ async function salvarObito() {
         if (json.status === 'sucesso') {
             alert(json.mensagem);
             fecharModal();
-            // Recarregar tabela
+            // RECARREGAR TABELA
             const tbody = document.querySelector('.tabelaResultado tbody');
             if (tbody) {
                 tbody.innerHTML = '';
